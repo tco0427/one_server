@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  spring-boot:
+    container_name: one_server_container
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: one_server_backend
+    ports:
+      - "8081:8081"
+      - "5005:5005"
+    restart: always
+    networks:
+      - backend-network
+
+networks:
+  backend-network:
