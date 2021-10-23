@@ -25,7 +25,7 @@ public class SwaggerConfig {
 
     public ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("위아원 API")
+            .title("위아원 API TEST")
             .version("0.1")
             .description("Spring Boot Rest API")
             .build();
