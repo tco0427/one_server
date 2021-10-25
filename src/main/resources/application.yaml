@@ -1,9 +1,39 @@
-server:
-  port : 8081
-
 spring:
   minio:
     url: http://121.124.124.8:9000
     bucket: bucket
     access-key: dgrowthroot
     secret-key: dgrowthroot2021!@
+
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
+
+  datasource:
+    url: jdbc:mysql://121.124.124.8/wareone?characterEncoding=UTF-8
+    username: dgrowth
+    password: elrmfhtm@!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+
+  jwt:
+    secret: rudthxhsdnldkdnjsvmfhwprxm
+    subject: weareonewJwt
+    claims:
+      user-id: uid
+      role: rle
+      login-id: lid
+      platform-id: pid
+
+loggin.level:
+  org.hibernate.type: trace
+
+server:
+  port: 8081
