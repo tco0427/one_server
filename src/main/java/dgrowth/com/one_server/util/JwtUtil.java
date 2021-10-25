@@ -1,7 +1,5 @@
 package dgrowth.com.one_server.util;
 
-import dgrowth.com.one_server.dto.response.TokenDto;
-import dgrowth.com.one_server.entity.Authority;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
