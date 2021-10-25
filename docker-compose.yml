@@ -14,5 +14,18 @@ services:
     networks:
       - backend-network
 
+  object-storage:
+    image: minio/minio
+    restart: unless-stopped
+    volumes:
+      - ./data/minio:/bucket
+    env_file: ./env/.env
+    command: server --address ":9000" --console-address ":9100" /bucket
+    ports:
+      - 9000:9000
+      - 9100:9100
+    networks:
+      - backend-network
+
 networks:
   backend-network:
