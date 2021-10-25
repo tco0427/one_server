@@ -2,7 +2,21 @@ server:
   port : 8081
 
 spring:
-  minio:
+  datasource: # DB 관련 설정
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://121.124.124.8:3306/wareone?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+    username: dgrowth
+    password: elrmfhtm@!
+
+  jpa: # JPA 관련 설정
+      hibernate:
+        ddl-auto: update
+      show-sql: true
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.MySQL5Dialect
+
+  minio: # object-storge 관련 설정
     url: http://121.124.124.8:9000
     bucket: bucket
     access-key: dgrowthroot
