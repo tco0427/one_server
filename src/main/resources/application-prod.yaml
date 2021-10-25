@@ -1,0 +1,9 @@
+server:
+  port : 8081
+
+spring:
+  minio:
+    url: http://object-storage:9000
+    bucket: bucket
+    access-key: dgrowthroot
+    secret-key: dgrowthroot2021!@
