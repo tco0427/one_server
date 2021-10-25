@@ -1,6 +1,3 @@
-server:
-  port : 8081
-
 spring:
   datasource: # DB 관련 설정
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -21,3 +18,23 @@ spring:
     bucket: bucket
     access-key: dgrowthroot
     secret-key: dgrowthroot2021!@
+
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
+
+  jwt: # 토큰 관련 설정
+    secret: rudthxhsdnldkdnjsvmfhwprxm
+    subject: weareonewJwt
+    claims:
+      user-id: uid
+      role: rle
+      login-id: lid
+      platform-id: pid
+
+loggin.level: # 로그 레벨 설정
+  org.hibernate.type: trace
+
+server: # 포트 설정
+  port: 8081

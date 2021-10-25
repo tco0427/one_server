@@ -1,5 +1,6 @@
 package dgrowth.com.one_server.util;
 
+import dgrowth.com.one_server.data.dto.response.TokenResponse;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,7 +44,7 @@ public class JwtUtil implements Serializable {
     /**
      * 토큰 발급
      */
-    public TokenDto generateToken(Authentication authentication){
+    public TokenResponse generateToken(Authentication authentication){
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -61,7 +62,7 @@ public class JwtUtil implements Serializable {
                 .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRE_TIME))
                 .signWith(SignatureAlgorithm.HS512, JWT_SECRET_KEY).compact();
 
-        return TokenDto.builder()
+        return TokenResponse.builder()
                 .grantType(BEARER_TYPE)
                 .accessToken(accessToken)
                 .accessTokenExpiresIn(accessTokenExpiresIn.getTime())
