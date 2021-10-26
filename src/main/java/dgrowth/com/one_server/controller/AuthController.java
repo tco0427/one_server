@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,7 +38,10 @@ public class AuthController {
         try{
             AuthResponse authResponse = authService.getUserInfoByKakao(kakaoRequest.getCode());
             response = new Response<>(authResponse);
-        } catch (Exception e){
+        } catch (HttpClientErrorException he){
+            response = new Response<>(HttpStatus.BAD_REQUEST, ResponseMessage.FAILED_TO_AUTH_KAKAO);
+        } catch(Exception e){
+            e.printStackTrace();
             response = new Response<>(HttpStatus.INTERNAL_SERVER_ERROR, ResponseMessage.FAILED_TO_LOGIN_KAKAO);
         }
 

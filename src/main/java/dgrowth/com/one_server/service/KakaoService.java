@@ -52,11 +52,8 @@ public class KakaoService {
         // 파라미터 설정
         HttpEntity<MultiValueMap<String, String>> parameter = getTokenParameter(headers, code);
 
-        log.error("parameter: "+parameter.toString());
         Map<String, String> response = webUtil
                 .requestApi(KAKAO_TOKEN_API, HttpMethod.POST, parameter);
-
-        log.error("response: " +response.toString());
 
         String token = response.get("access_token");
         if (token == null || token.equals("")) {

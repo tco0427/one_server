@@ -1,5 +1,6 @@
 package dgrowth.com.one_server.domain.entity;
 
+import dgrowth.com.one_server.data.dto.response.TokenResponse;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,14 +21,23 @@ public class UserToken extends BaseEntity{
 
     // 토큰
     @Column(columnDefinition = "varchar(400)")
-    private String token;
+    private String accessToken;
 
     // 리프레시 토큰
     @Column(columnDefinition = "varchar(400)")
     private String refreshToken;
 
-    public UserToken(String token, String refreshToken) {
-        this.token = token;
+    public UserToken(String accessToken, String refreshToken) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+    }
+
+    public TokenResponse toResponse(){
+        return new TokenResponse(accessToken, refreshToken);
+    }
+
+    public void setToken(String accessToken, String refreshToken){
+        this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
 }

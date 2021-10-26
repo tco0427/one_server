@@ -24,6 +24,12 @@ public class AuthService {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
+    /**
+     * 회원 가입
+     * @param request SignUpRequest
+     * @return SignUpResponse
+     * @throws DuplicatedUserException
+     */
     @Transactional
     public SignUpResponse signUp(SignUpRequest request) throws DuplicatedUserException {
         // 1. 플랫폼 타입(카카오, 네이버)와 고유 아이디로 회원 여부 조회
@@ -44,6 +50,12 @@ public class AuthService {
         return new SignUpResponse(savedUser.toResponse(), tokenResponse);
     }
 
+    /**
+     * 카카오 인증을 통해 회원정보를 가져옴
+     * @param code String
+     * @return AuthResponse
+     * @throws IOException
+     */
     public AuthResponse getUserInfoByKakao(String code) throws IOException {
         AuthResponse authResponse = new AuthResponse();
 
@@ -59,7 +71,8 @@ public class AuthService {
         boolean isUser = false;
 
         // 3. platformId로 회원여부 판단
-        User savedUser = userService.findByPlatformTypeAndPlatformId(oAuthResponse.getPlatformType(), oAuthResponse.getPlatformId());
+        User savedUser = userService.findByPlatformTypeAndPlatformId(
+            oAuthResponse.getPlatformType(), oAuthResponse.getPlatformId());
         if (savedUser == null) { // 5-1. 회원이 아닐경우 회원정보 및 토큰 정보에 null set
             userResponse = null;
             tokenResponse = null;
@@ -67,10 +80,14 @@ public class AuthService {
             isUser = true;
             // 4-1. 유저 객체 저장
             userResponse = savedUser.toResponse();
-
             // 4-2. 토큰 정보 가쟈와서 유효기간 판단 후 재발급여부 결정
-            tokenResponse = new TokenResponse();
-
+            UserToken userToken = savedUser.getUserToken();
+            if(jwtUtil.isTokenExpired(userToken.getAccessToken())){ // 유효기간이 만료된 토큰일 경우 재발급
+                tokenResponse = jwtUtil.generateToken(savedUser.getId(), savedUser.getEmail(), savedUser.getAuthority());
+                userToken.setToken(tokenResponse.getAccessToken(), tokenResponse.getRefreshToken());
+                userToken = userService.saveToken(userToken);
+            }
+            tokenResponse = userToken.toResponse();
         }
 
         authResponse.setUser(isUser);

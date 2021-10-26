@@ -4,6 +4,7 @@ import dgrowth.com.one_server.data.dto.response.TokenResponse;
 import dgrowth.com.one_server.data.enumeration.Authority;
 import dgrowth.com.one_server.data.enumeration.Token;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.io.Serializable;
@@ -46,9 +47,10 @@ public class JwtUtil implements Serializable {
      */
     public TokenResponse generateToken(long userId, String email, Authority authority){
         String accessToken = generateTokenByType(Token.ACCESS_TOKEN, userId, email, authority);
-        log.error("accessToken : " + accessToken);
         String refreshToken = generateTokenByType(Token.REFRESH_TOKEN, userId, email, authority);
-        log.error("refreshToken : " + refreshToken);
+
+        log.info("accessToken : " + accessToken);
+        log.info("refreshToken : " + refreshToken);
 
         return new TokenResponse(accessToken, refreshToken);
     }
@@ -150,8 +152,15 @@ public class JwtUtil implements Serializable {
      * @param token String
      * @return boolean
      */
-    public Boolean isTokenExpired(String token){
-        final Date expirationDate = getExpirationDateByToken(token);
-        return expirationDate.before(new Date());
+    public boolean isTokenExpired(String token){
+        boolean isTokenExpired = false;
+        try {
+            Date expirationDate = getExpirationDateByToken(token);
+            isTokenExpired = expirationDate.before(new Date());
+        } catch (ExpiredJwtException e){
+            isTokenExpired = true;
+        }
+
+        return isTokenExpired;
     }
 }
