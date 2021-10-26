@@ -13,7 +13,7 @@ public class OAuthResponse {
     private PlatformType platformType;
 
     // 플랫폼 아이디
-    private int platformId;
+    private String platformId;
 
     // 닉네임
     private String nickName;

@@ -29,8 +29,8 @@ spring:
     subject: weareonewJwt
     claims:
       user-id: uid
-      role: rle
-      login-id: lid
+      authority: ath
+      email: eml
       platform-id: pid
 
 loggin.level: # 로그 레벨 설정
@@ -38,3 +38,10 @@ loggin.level: # 로그 레벨 설정
 
 server: # 포트 설정
   port: 8081
+
+kakao: #카카오 설정
+  client-id: 999fbe6f90c7394d03fd2e03ea5df4d1
+  client-secret: LOg2JhBv3IgBjVYfzhCK8K8w8P7RPSAT
+  redirect-url: http://api-werone.itkoo.kr/api/auth/kakao
+  token-api: https://kauth.kakao.com/oauth/token
+  user-api: https://kapi.kakao.com/v2/user/me

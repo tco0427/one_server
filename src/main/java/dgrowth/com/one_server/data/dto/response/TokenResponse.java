@@ -1,5 +1,6 @@
 package dgrowth.com.one_server.data.dto.response;
 
+import dgrowth.com.one_server.domain.entity.UserToken;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,8 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class TokenResponse {
-    private String grantType;
     private String accessToken;
-    private Long accessTokenExpiresIn;
     private String refreshToken;
+
+    public UserToken toUserToken(){
+        return new UserToken(accessToken, refreshToken);
+    }
 }

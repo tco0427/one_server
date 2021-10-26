@@ -1,24 +1,18 @@
-package dgrowth.com.one_server.data.dto.response;
+package dgrowth.com.one_server.data.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import dgrowth.com.one_server.data.enumeration.Authority;
 import dgrowth.com.one_server.data.enumeration.Gender;
 import dgrowth.com.one_server.data.enumeration.PlatformType;
-import dgrowth.com.one_server.domain.entity.UserToken;
+import dgrowth.com.one_server.domain.entity.User;
 import java.time.LocalDate;
 import java.util.Date;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class UserResponse {
-    // 회원 id
-    private Long id;
+public class SignUpRequest {
 
     // 가입 플랫폼 타입(카카오, 네이버)
     private PlatformType platformType;
@@ -32,12 +26,21 @@ public class UserResponse {
     // 이메일
     private String email;
 
-    // 프로필 이미지
-    private String profileImageUrl;
-
     // 성별
     private Gender gender;
 
     // 생년월일(yymmdd)
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate birth;
+
+    // 프로필 이미지
+    private String profileImageUrl;
+
+    // 학생증 이미지
+    private String idCardImageUrl;
+
+    public User toUser() {
+        return new User(platformType, platformId, name, email, profileImageUrl, idCardImageUrl,
+            gender, birth, Authority.USER);
+    }
 }
