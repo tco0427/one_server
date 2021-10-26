@@ -29,7 +29,7 @@ public class KakaoController {
             + "    top: 50%;\n"
             + "    -ms-transform: translateY(-50%);\n"
             + "    transform: translate(-50%, -50%);\n"
-            + "    width: 30%;\n"
+            + "    width: 18%;\n"
             + "    left: 50%;' src='https://c.tenor.com/I6kN-6X7nhAAAAAj/loading-buffering.gif'></div>";
     }
 
