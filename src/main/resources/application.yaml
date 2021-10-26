@@ -42,6 +42,6 @@ server: # 포트 설정
 kakao: #카카오 설정
   client-id: 999fbe6f90c7394d03fd2e03ea5df4d1
   client-secret: LOg2JhBv3IgBjVYfzhCK8K8w8P7RPSAT
-  redirect-url: http://api-werone.itkoo.kr/api/auth/kakao
+  redirect-url: http://api-werone.itkoo.kr/auth/kakao
   token-api: https://kauth.kakao.com/oauth/token
   user-api: https://kapi.kakao.com/v2/user/me
