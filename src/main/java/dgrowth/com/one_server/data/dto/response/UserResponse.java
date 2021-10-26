@@ -3,6 +3,7 @@ package dgrowth.com.one_server.data.dto.response;
 import dgrowth.com.one_server.data.enumeration.Gender;
 import dgrowth.com.one_server.data.enumeration.PlatformType;
 import dgrowth.com.one_server.domain.entity.UserToken;
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -38,5 +39,5 @@ public class UserResponse {
     private Gender gender;
 
     // 생년월일(yymmdd)
-    private Date birth;
+    private LocalDate birth;
 }

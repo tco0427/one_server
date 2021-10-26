@@ -7,33 +7,41 @@ import dgrowth.com.one_server.data.dto.response.SignUpResponse;
 import dgrowth.com.one_server.data.dto.response.TokenResponse;
 import dgrowth.com.one_server.data.dto.response.UserResponse;
 import dgrowth.com.one_server.domain.entity.User;
+import dgrowth.com.one_server.domain.entity.UserToken;
+import dgrowth.com.one_server.exception.DuplicatedUserException;
+import dgrowth.com.one_server.util.JwtUtil;
 import java.io.IOException;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AuthService {
     private final KakaoService kakaoService;
     private final UserService userService;
+    private final JwtUtil jwtUtil;
 
     @Transactional
-    public SignUpResponse signUp(SignUpRequest request) {
-        // 플랫폼 타입(카카오, 네이버)와 고유 아이디로 회원 여부 조회
+    public SignUpResponse signUp(SignUpRequest request) throws DuplicatedUserException {
+        // 1. 플랫폼 타입(카카오, 네이버)와 고유 아이디로 회원 여부 조회
         if (userService.isSavedUser(request.getPlatformType(), request.getPlatformId())) {
-            throw new RuntimeException("이미 가입되어 있는 유저입니다");
+            throw new DuplicatedUserException();
         }
 
-        // 회원 정보 저장
+        // 2. 회원 정보 저장
         User user = request.toUser();
         User savedUser = userService.save(user);
 
-        TokenResponse tokenResponse = new TokenResponse();
+        // 3. 토큰 발급 및 정보 저장
+        TokenResponse tokenResponse = jwtUtil.generateToken(savedUser.getId(), savedUser.getEmail(), savedUser.getAuthority());
+        UserToken savedUserToken = userService.saveToken(tokenResponse.toUserToken());
+        savedUser.setUserToken(savedUserToken);
+        savedUser = userService.save(user);
 
-        SignUpResponse response = new SignUpResponse(savedUser.toResponse(), tokenResponse);
-
-        return response;
+        return new SignUpResponse(savedUser.toResponse(), tokenResponse);
     }
 
     public AuthResponse getUserInfoByKakao(String code) throws IOException {

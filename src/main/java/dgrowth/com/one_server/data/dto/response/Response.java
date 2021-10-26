@@ -30,6 +30,7 @@ public class Response<T> {
 
     public Response(HttpStatus status, String message) {
         this.status = status.value();
+        this.message = message;
         this.data = null;
     }
 

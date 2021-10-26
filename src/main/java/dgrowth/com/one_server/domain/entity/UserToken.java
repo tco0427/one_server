@@ -19,8 +19,15 @@ public class UserToken extends BaseEntity{
     private Long id;
 
     // 토큰
+    @Column(columnDefinition = "varchar(400)")
     private String token;
 
     // 리프레시 토큰
+    @Column(columnDefinition = "varchar(400)")
     private String refreshToken;
+
+    public UserToken(String token, String refreshToken) {
+        this.token = token;
+        this.refreshToken = refreshToken;
+    }
 }

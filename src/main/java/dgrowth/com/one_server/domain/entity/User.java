@@ -4,6 +4,7 @@ import dgrowth.com.one_server.data.dto.response.UserResponse;
 import dgrowth.com.one_server.data.enumeration.Authority;
 import dgrowth.com.one_server.data.enumeration.Gender;
 import dgrowth.com.one_server.data.enumeration.PlatformType;
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -51,7 +52,7 @@ public class User extends BaseEntity{
     private Gender gender;
 
     // 생년월일(yymmdd)
-    private Date birth;
+    private LocalDate birth;
 
     @Enumerated(EnumType.STRING)
     private Authority authority;
@@ -66,7 +67,7 @@ public class User extends BaseEntity{
     }
 
     public User(PlatformType platformType, String platformId, String name, String email,
-        String profileImageUrl, String idCardUrl, Gender gender, Date birth,
+        String profileImageUrl, String idCardUrl, Gender gender, LocalDate birth,
         Authority authority) {
         this.platformType = platformType;
         this.platformId = platformId;
@@ -77,5 +78,9 @@ public class User extends BaseEntity{
         this.gender = gender;
         this.birth = birth;
         this.authority = authority;
+    }
+
+    public void setUserToken(UserToken userToken) {
+        this.userToken = userToken;
     }
 }

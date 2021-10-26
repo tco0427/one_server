@@ -1,6 +1,8 @@
 package dgrowth.com.one_server.util;
 
+import dgrowth.com.one_server.data.dto.response.TokenResponse;
 import dgrowth.com.one_server.data.enumeration.Authority;
+import dgrowth.com.one_server.data.enumeration.Token;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -25,14 +27,15 @@ public class JwtUtil implements Serializable {
     @Value("${spring.jwt.claims.user-id}")
     private String USER_ID_CLAIM;
 
-    @Value("${spring.jwt.claims.role}")
+    @Value("${spring.jwt.claims.authority}")
     private String USER_AUTHORITY_CLAIM;
 
-    @Value("${spring.jwt.claims.login-id}")
+    @Value("${spring.jwt.claims.email}")
     private String EMAIL_CLAIM;
 
-    // 토큰 유효시간(30분)
-    public static final long JWT_TOKEN_EXPIRATION = 30 * 60 * 60;
+    // 토큰 유효시간
+    public static final long JWT_TOKEN_EXPIRATION = 60; // 1분
+    public static final long JWT_REFRESH_TOKEN_EXPIRATION = 30 * 24 * 60 * 60; // 30일
 
     /**
      * 토큰 발급
@@ -41,16 +44,46 @@ public class JwtUtil implements Serializable {
      * @param authority String 권한
      * @return String
      */
-    public String generateToken(long userId, String email, Authority authority){
+    public TokenResponse generateToken(long userId, String email, Authority authority){
+        String accessToken = generateTokenByType(Token.ACCESS_TOKEN, userId, email, authority);
+        log.error("accessToken : " + accessToken);
+        String refreshToken = generateTokenByType(Token.REFRESH_TOKEN, userId, email, authority);
+        log.error("refreshToken : " + refreshToken);
+
+        return new TokenResponse(accessToken, refreshToken);
+    }
+
+    /**
+     * 리프레시 토큰 발급
+     * @param userId long 유저 id
+     * @param email String 이메일
+     * @param authority String 권한
+     * @return String
+     */
+    public String generateRefreshToken(long userId, String email, Authority authority){
+        return generateTokenByType(Token.ACCESS_TOKEN, userId, email, authority);
+    }
+
+
+    /**
+     * 토큰 타입으로 유효기간 설정후 토큰 발급
+     * @param userId long 유저 id
+     * @param email String 이메일
+     * @param authority String 권한
+     * @return String
+     */
+    public String generateTokenByType(Token tokenType, long userId, String email, Authority authority){
+        Long expirationSeconds = tokenType.equals(Token.ACCESS_TOKEN)? JWT_TOKEN_EXPIRATION : JWT_REFRESH_TOKEN_EXPIRATION;
+
         Map<String, Object> claims = new HashMap<>();
         claims.put(USER_ID_CLAIM, userId);
         claims.put(USER_AUTHORITY_CLAIM, authority);
         claims.put(EMAIL_CLAIM, email);
 
         return Jwts.builder().setHeaderParam("typ", "JWT")
-                .setClaims(claims).setSubject(JWT_SUBJECT).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_EXPIRATION * 1000))
-                .signWith(SignatureAlgorithm.HS512, JWT_SECRET_KEY).compact();
+            .setClaims(claims).setSubject(JWT_SUBJECT).setIssuedAt(new Date(System.currentTimeMillis()))
+            .setExpiration(new Date(System.currentTimeMillis() + expirationSeconds * 1000))
+            .signWith(SignatureAlgorithm.HS512, JWT_SECRET_KEY).compact();
     }
 
     /**

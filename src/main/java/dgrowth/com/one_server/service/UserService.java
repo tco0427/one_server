@@ -2,7 +2,9 @@ package dgrowth.com.one_server.service;
 
 import dgrowth.com.one_server.data.enumeration.PlatformType;
 import dgrowth.com.one_server.domain.entity.User;
+import dgrowth.com.one_server.domain.entity.UserToken;
 import dgrowth.com.one_server.domain.repository.UserRepository;
+import dgrowth.com.one_server.domain.repository.UserTokenRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final UserTokenRepository userTokenRepository;
 
     /**
      * 플랫폼 타입(네이버, 카카오)와 플랫폼 유저 고유 ID로 회원정보 조회
@@ -46,5 +49,9 @@ public class UserService {
      */
     public User save(User user){
         return userRepository.save(user);
+    }
+
+    public UserToken saveToken(UserToken userToken){
+        return userTokenRepository.save(userToken);
     }
 }

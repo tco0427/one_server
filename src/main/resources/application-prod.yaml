@@ -29,8 +29,8 @@ spring:
     subject: weareonewJwt
     claims:
       user-id: uid
-      role: rle
-      login-id: lid
+      authority: ath
+      email: eml
       platform-id: pid
 
 loggin.level: # 로그 레벨 설정

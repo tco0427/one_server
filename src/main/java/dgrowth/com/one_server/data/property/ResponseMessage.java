@@ -8,4 +8,5 @@ public class ResponseMessage {
     public static final String FAILED_TO_GET_IMAGE= "이미지를 불러올 수 없습니다.";
     public static final String FAILED_TO_LOGIN_KAKAO= "카카오 로그인 인증에 실패하였습니다.";
     public static final String FAILED_TO_SIGN_UP= "회원가입에 실패하였습니다.";
+    public static final String DUPLICATED_USER = "이미 가입된 유저입니다.";
 }

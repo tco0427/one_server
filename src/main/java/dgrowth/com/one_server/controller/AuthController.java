@@ -8,6 +8,7 @@ import dgrowth.com.one_server.data.dto.response.Response;
 import dgrowth.com.one_server.data.dto.response.SignUpResponse;
 import dgrowth.com.one_server.data.dto.response.UserResponse;
 import dgrowth.com.one_server.data.property.ResponseMessage;
+import dgrowth.com.one_server.exception.DuplicatedUserException;
 import dgrowth.com.one_server.service.AuthService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +50,8 @@ public class AuthController {
         try{
             SignUpResponse signUpResponse = authService.signUp(signUpRequest);
             response = new Response<>(signUpResponse);
+        } catch (DuplicatedUserException e){
+            response = new Response<>(e.getHttpStatus(), e.getMessage());
         } catch (Exception e){
             response = new Response<>(HttpStatus.INTERNAL_SERVER_ERROR, ResponseMessage.FAILED_TO_SIGN_UP);
         }

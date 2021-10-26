@@ -1,9 +1,11 @@
 package dgrowth.com.one_server.data.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import dgrowth.com.one_server.data.enumeration.Authority;
 import dgrowth.com.one_server.data.enumeration.Gender;
 import dgrowth.com.one_server.data.enumeration.PlatformType;
 import dgrowth.com.one_server.domain.entity.User;
+import java.time.LocalDate;
 import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,7 +30,8 @@ public class SignUpRequest {
     private Gender gender;
 
     // 생년월일(yymmdd)
-    private Date birth;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private LocalDate birth;
 
     // 프로필 이미지
     private String profileImageUrl;
