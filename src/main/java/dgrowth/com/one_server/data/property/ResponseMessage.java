@@ -10,4 +10,7 @@ public class ResponseMessage {
     public static final String FAILED_TO_AUTH_KAKAO= "카카오 코드 인증이 만료되었습니다. 재발급이 필요합니다.";
     public static final String FAILED_TO_SIGN_UP= "회원가입에 실패하였습니다.";
     public static final String DUPLICATED_USER = "이미 가입된 유저입니다.";
+    public static final String INVALID_TOKEN = "유효하지 않은 토큰이거나 전달 방식이 올바르지 않습니다.";
+    public static final String EXPIRED_TOKEN = "유효기간이 만료된 토큰입니다.";
+    public static final String INVALID_USER = "유저 ID에 해당하는 회원 정보가 없습니다.";
 }

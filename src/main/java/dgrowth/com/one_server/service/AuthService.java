@@ -9,8 +9,12 @@ import dgrowth.com.one_server.data.dto.response.UserResponse;
 import dgrowth.com.one_server.domain.entity.User;
 import dgrowth.com.one_server.domain.entity.UserToken;
 import dgrowth.com.one_server.exception.DuplicatedUserException;
+import dgrowth.com.one_server.exception.ExpiredTokenException;
+import dgrowth.com.one_server.exception.InvalidTokenException;
+import dgrowth.com.one_server.exception.InvalidUserException;
 import dgrowth.com.one_server.util.JwtUtil;
 import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -97,4 +101,42 @@ public class AuthService {
         return authResponse;
     }
 
+
+    /**
+     * 헤더에서 토큰을 가져오는 메서드
+     * @param httpServletRequest HttpServletRequest
+     * @return String
+     * @throws InvalidTokenException
+     */
+    public String getTokenByHeader(HttpServletRequest httpServletRequest) throws InvalidTokenException {
+        String authenticationHeader = httpServletRequest.getHeader("Authorization");
+
+        if (authenticationHeader == null || !authenticationHeader.startsWith("Bearer")) {
+            throw new InvalidTokenException();
+        }
+
+        String token = authenticationHeader.replace("Bearer", "");
+        if (token.length() == 0) {
+            throw new InvalidTokenException();
+        }
+
+        return token;
+    }
+
+    /**
+     * 토큰에서 유저정보를 구함(기간 등 유효성 체크)
+     * @param token String
+     * @return UserResponse
+     */
+    public UserResponse getUserInfoByToken(String token)
+        throws ExpiredTokenException, InvalidUserException {
+        if(jwtUtil.isTokenExpired(token)){
+            throw new ExpiredTokenException();
+        }
+
+        Long userId = jwtUtil.getUserIdByToken(token);
+        User savedUser = userService.findById(userId);
+
+        return savedUser.toResponse();
+    }
 }
