@@ -1,9 +1,11 @@
 package dgrowth.com.one_server.controller;
 
 import dgrowth.com.one_server.data.dto.request.KakaoRequest;
+import dgrowth.com.one_server.data.dto.request.SignUpRequest;
 import dgrowth.com.one_server.data.dto.response.AuthResponse;
 import dgrowth.com.one_server.data.dto.response.OAuthResponse;
 import dgrowth.com.one_server.data.dto.response.Response;
+import dgrowth.com.one_server.data.dto.response.SignUpResponse;
 import dgrowth.com.one_server.data.dto.response.UserResponse;
 import dgrowth.com.one_server.data.property.ResponseMessage;
 import dgrowth.com.one_server.service.AuthService;
@@ -23,6 +25,11 @@ public class AuthController {
 
     private final AuthService authService;
 
+    /**
+     * 카카오 로그인 버튼 클릭 시 유저 정보를 가져와 회원여부를 판단
+     * @param kakaoRequest KakaoRequest
+     * @return Response<AuthResponse>
+     */
     @PostMapping("/kakao")
     public Response<AuthResponse> loginWithKakao(@RequestBody KakaoRequest kakaoRequest){
         Response<AuthResponse> response;
@@ -31,6 +38,19 @@ public class AuthController {
             response = new Response<>(authResponse);
         } catch (Exception e){
             response = new Response<>(HttpStatus.INTERNAL_SERVER_ERROR, ResponseMessage.FAILED_TO_LOGIN_KAKAO);
+        }
+
+        return response;
+    }
+
+    @PostMapping("/signup")
+    public Response<SignUpResponse> signUp(@RequestBody SignUpRequest signUpRequest){
+        Response<SignUpResponse> response;
+        try{
+            SignUpResponse signUpResponse = authService.signUp(signUpRequest);
+            response = new Response<>(signUpResponse);
+        } catch (Exception e){
+            response = new Response<>(HttpStatus.INTERNAL_SERVER_ERROR, ResponseMessage.FAILED_TO_SIGN_UP);
         }
 
         return response;

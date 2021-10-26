@@ -1,5 +1,13 @@
 package dgrowth.com.one_server.data.enumeration;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum Authority {
-    ROLE_USER, ROLE_ADMIN
+    USER("USER"), ADMIN("ADMIN");
+
+    private final String value;
 }
+
