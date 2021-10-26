@@ -2,11 +2,16 @@ package dgrowth.com.one_server.controller;
 
 import dgrowth.com.one_server.data.dto.request.KakaoRequest;
 import dgrowth.com.one_server.data.dto.request.SignUpRequest;
+import dgrowth.com.one_server.data.dto.request.TokenRequest;
 import dgrowth.com.one_server.data.dto.response.AuthResponse;
 import dgrowth.com.one_server.data.dto.response.Response;
 import dgrowth.com.one_server.data.dto.response.SignUpResponse;
+import dgrowth.com.one_server.data.dto.response.TokenResponse;
 import dgrowth.com.one_server.data.property.ResponseMessage;
 import dgrowth.com.one_server.exception.DuplicatedUserException;
+import dgrowth.com.one_server.exception.ExpiredTokenException;
+import dgrowth.com.one_server.exception.InvalidTokenException;
+import dgrowth.com.one_server.exception.InvalidUserException;
 import dgrowth.com.one_server.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -43,6 +48,11 @@ public class AuthController {
         return response;
     }
 
+    /**
+     * 회원 가입
+     * @param signUpRequest SignUpRequest
+     * @return Response<SignUpResponse>
+     */
     @PostMapping("/signup")
     public Response<SignUpResponse> signUp(@RequestBody SignUpRequest signUpRequest){
         Response<SignUpResponse> response;
@@ -53,6 +63,25 @@ public class AuthController {
             response = new Response<>(e.getHttpStatus(), e.getMessage());
         } catch (Exception e){
             response = new Response<>(HttpStatus.INTERNAL_SERVER_ERROR, ResponseMessage.FAILED_TO_SIGN_UP);
+        }
+
+        return response;
+    }
+
+    @PostMapping("/token")
+    public Response<TokenResponse> reIssueToken(@RequestBody TokenRequest tokenRequest){
+
+        Response<TokenResponse> response;
+        try {
+            TokenResponse tokenResponse = authService.generateTokenByRefreshToken(tokenRequest.getRefreshToken());
+            response = new Response<>(tokenResponse);
+        } catch (ExpiredTokenException expiredTokenException){ // 토큰 만료
+            response = new Response<>(expiredTokenException.getHttpStatus(), expiredTokenException.getMessage());
+        } catch (InvalidUserException invalidUserException){ // 회원 정보 없음
+            response = new Response<>(invalidUserException.getHttpStatus(), invalidUserException.getMessage());
+        } catch (Exception exception){
+            exception.printStackTrace();
+            response = new Response<>(HttpStatus.INTERNAL_SERVER_ERROR, ResponseMessage.FAILED_TO_RE_ISSUE_TOKEN);
         }
 
         return response;

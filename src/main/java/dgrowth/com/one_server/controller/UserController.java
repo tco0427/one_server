@@ -40,7 +40,7 @@ public class UserController {
         } catch (InvalidUserException invalidUserException){ // 회원 정보 없음
             response = new Response<>(invalidUserException.getHttpStatus(), invalidUserException.getMessage());
         } catch (Exception exception){
-            response = new Response<>(HttpStatus.INTERNAL_SERVER_ERROR, ResponseMessage.FAILED_TO_LOGIN_KAKAO);
+            response = new Response<>(HttpStatus.INTERNAL_SERVER_ERROR, ResponseMessage.FAILED_TO_FIND_USER);
         }
 
         return response;

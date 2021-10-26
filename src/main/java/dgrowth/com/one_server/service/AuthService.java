@@ -139,4 +139,31 @@ public class AuthService {
 
         return savedUser.toResponse();
     }
+
+    /**
+     * 리프레시 토큰으로 토큰 재발급
+     * @param refreshToken String
+     * @return TokenResponse
+     * @throws ExpiredTokenException
+     * @throws InvalidUserException
+     */
+    public TokenResponse generateTokenByRefreshToken(String refreshToken)
+        throws ExpiredTokenException, InvalidUserException {
+        // 1. 토큰 만료일 체크
+        if(jwtUtil.isTokenExpired(refreshToken)){
+            throw new ExpiredTokenException();
+        }
+
+        // 2. 토큰에서 회원 id 찾아서 회원 정보 get
+        Long userId = jwtUtil.getUserIdByToken(refreshToken);
+        User savedUser = userService.findById(userId);
+        UserToken savedUserToken = savedUser.getUserToken();
+
+        // 3. 토큰 재발급 후 저장
+        TokenResponse tokenResponse = jwtUtil.generateToken(savedUser.getId(), savedUser.getEmail(), savedUser.getAuthority());
+        savedUserToken.setToken(tokenResponse.getAccessToken(), tokenResponse.getRefreshToken());
+        savedUserToken = userService.saveToken(savedUserToken);
+
+        return tokenResponse;
+    }
 }
