@@ -10,14 +10,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import static lombok.AccessLevel.PROTECTED;
+
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 @ToString
 public class UserToken extends BaseEntity{
     @Id
     @GeneratedValue
-    @Column(name = "id")
     private Long id;
 
     // 토큰
