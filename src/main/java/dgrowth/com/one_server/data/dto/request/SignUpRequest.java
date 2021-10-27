@@ -3,10 +3,14 @@ package dgrowth.com.one_server.data.dto.request;
 import dgrowth.com.one_server.data.enumeration.Authority;
 import dgrowth.com.one_server.data.enumeration.PlatformType;
 import dgrowth.com.one_server.domain.entity.User;
+import java.util.Arrays;
+import java.util.Base64;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 @Data
+@Slf4j
 @AllArgsConstructor
 public class SignUpRequest {
 
@@ -28,7 +32,13 @@ public class SignUpRequest {
     // 학생증 이미지
     private String idCardImage;
 
+    public void decodeIdCardImage() {
+        idCardImage = Arrays.toString(Base64.getDecoder().decode(idCardImage));
+        log.error("decodeIdCardImage : " + idCardImage);
+    }
+
     public User toUser() {
+        decodeIdCardImage();
         return new User(platformType, platformId, name, email, profileImageUrl, idCardImage,
             Authority.USER);
     }
