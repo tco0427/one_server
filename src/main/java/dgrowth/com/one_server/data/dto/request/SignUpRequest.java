@@ -1,12 +1,8 @@
 package dgrowth.com.one_server.data.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import dgrowth.com.one_server.data.enumeration.Authority;
-import dgrowth.com.one_server.data.enumeration.Gender;
 import dgrowth.com.one_server.data.enumeration.PlatformType;
 import dgrowth.com.one_server.domain.entity.User;
-import java.time.LocalDate;
-import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -26,21 +22,14 @@ public class SignUpRequest {
     // 이메일
     private String email;
 
-    // 성별
-    private Gender gender;
-
-    // 생년월일(yymmdd)
-    @JsonFormat(pattern="yyyy-MM-dd")
-    private LocalDate birth;
-
     // 프로필 이미지
     private String profileImageUrl;
 
     // 학생증 이미지
-    private String idCardImageUrl;
+    private String idCardImage;
 
     public User toUser() {
-        return new User(platformType, platformId, name, email, profileImageUrl, idCardImageUrl,
-            gender, birth, Authority.USER);
+        return new User(platformType, platformId, name, email, profileImageUrl, idCardImage,
+            Authority.USER);
     }
 }
