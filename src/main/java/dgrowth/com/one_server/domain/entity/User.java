@@ -5,7 +5,6 @@ import dgrowth.com.one_server.data.enumeration.Authority;
 import dgrowth.com.one_server.data.enumeration.Gender;
 import dgrowth.com.one_server.data.enumeration.PlatformType;
 import java.time.LocalDate;
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -22,7 +21,8 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @ToString
-public class User extends BaseEntity{
+public class User extends BaseEntity {
+
     @Id
     @GeneratedValue
     @Column(name = "id")
@@ -62,10 +62,6 @@ public class User extends BaseEntity{
     private UserToken userToken;
 
 
-    public UserResponse toResponse(){
-        return new UserResponse(id, platformType, platformId, name, email, profileImageUrl, gender, birth);
-    }
-
     public User(PlatformType platformType, String platformId, String name, String email,
         String profileImageUrl, String idCardUrl, Gender gender, LocalDate birth,
         Authority authority) {
@@ -78,6 +74,23 @@ public class User extends BaseEntity{
         this.gender = gender;
         this.birth = birth;
         this.authority = authority;
+    }
+
+    public User(PlatformType platformType, String platformId, String name,
+        String email, String profileImageUrl, String idCardUrl,
+        Authority authority) {
+        this.platformType = platformType;
+        this.platformId = platformId;
+        this.name = name;
+        this.email = email;
+        this.profileImageUrl = profileImageUrl;
+        this.idCardUrl = idCardUrl;
+        this.authority = authority;
+    }
+
+    public UserResponse toResponse() {
+        return new UserResponse(id, platformType, platformId, name, email, profileImageUrl, gender,
+            birth);
     }
 
     public void setUserToken(UserToken userToken) {

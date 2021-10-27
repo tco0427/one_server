@@ -6,12 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Getter
-@ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = ResponseMessage.INVALID_TOKEN)
-public class InvalidTokenException extends RuntimeException {
+@ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = ResponseMessage.FAILED_TO_AUTH_KAKAO)
+public class ExpiredKakaoTokenException extends RuntimeException {
 
-    String message = ResponseMessage.INVALID_TOKEN;
+    String message = ResponseMessage.FAILED_TO_AUTH_KAKAO;
 
-    public InvalidTokenException() {
+    public ExpiredKakaoTokenException() {
         this.message = message;
     }
 }
