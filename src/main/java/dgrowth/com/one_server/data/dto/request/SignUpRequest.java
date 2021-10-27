@@ -34,7 +34,8 @@ public class SignUpRequest {
 
     public void decodeIdCardImage() {
         idCardImage = Arrays.toString(Base64.getDecoder().decode(idCardImage));
-        log.error("decodeIdCardImage : " + idCardImage);
+        // TODO 디코딩 한후 이미지 업로드 필요
+        idCardImage = "";
     }
 
     public User toUser() {
