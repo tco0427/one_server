@@ -15,6 +15,10 @@ public class GroupService {
 
     private final GroupRepository groupRepository;
 
+    public Group findById(Long id) {
+        return groupRepository.findById(id).get();
+    }
+
     public List<Group> findAll() {
         return groupRepository.findAll();
     }

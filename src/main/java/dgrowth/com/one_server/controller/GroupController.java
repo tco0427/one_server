@@ -11,6 +11,7 @@ import dgrowth.com.one_server.exception.InvalidTokenException;
 import dgrowth.com.one_server.exception.InvalidUserException;
 import dgrowth.com.one_server.service.AuthService;
 import dgrowth.com.one_server.service.GroupService;
+import dgrowth.com.one_server.service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ public class GroupController {
 
     private final AuthService authService;
     private final GroupService groupService;
+    private final UserService userService;
 
     /**
      * 그룹 생성
@@ -41,13 +43,15 @@ public class GroupController {
             String token = authService.getTokenByHeader(httpServletRequest);
 
             // 2. 토큰 유효성 체크 및 유저 불러오기
-            User host = authService.getUserByToken(token);
+            Long hostId = authService.getUserByToken(token).getId();
 
             // 3. 그룹 생성
-            Group newGroup = new Group(createGroupRequest.getTitle(), host);
+            Group newGroup = new Group(createGroupRequest.getTitle(), hostId);
+            Long savedId = groupService.save(newGroup);
 
             // 4. Response 생성
             response = new Response<>(newGroup.toResponse());
+
         } catch (InvalidTokenException invalidTokenException){ // 토큰 전달 이상
             response = new Response<>(invalidTokenException.getHttpStatus(), invalidTokenException.getMessage());
         } catch (ExpiredTokenException expiredTokenException){ // 토큰 만료

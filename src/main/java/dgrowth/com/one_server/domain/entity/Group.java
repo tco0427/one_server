@@ -26,18 +26,17 @@ public class Group {
 
     private String title;
 
-    @OneToOne
-    private User host;
+    private Long hostId;
 
     @OneToMany(mappedBy = "group")
     private List<ParticipantGroup> participantGroups = new ArrayList<>();
 
-    public Group(String title, User host) {
+    public Group(String title, Long id) {
         this.title = title;
-        this.host = host;
+        this.hostId = id;
     }
 
     public GroupResponse toResponse() {
-        return new GroupResponse(id, title, host, participantGroups);
+        return new GroupResponse(id, title, hostId, participantGroups);
     }
 }

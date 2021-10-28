@@ -17,7 +17,7 @@ public class GroupResponse {
 
     private String title;
 
-    private User host;
+    private Long hostId;
 
-    private List<ParticipantGroup> participantGroups = new ArrayList<>();
+    private List<ParticipantGroup> participantGroups;
 }
