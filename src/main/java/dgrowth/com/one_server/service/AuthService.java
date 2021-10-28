@@ -141,6 +141,23 @@ public class AuthService {
     }
 
     /**
+     * 토큰에서 유저정보를 구함(기간 등 유효성 체크)
+     * @param token String
+     * @return User
+     */
+    public User getUserByToken(String token)
+        throws ExpiredTokenException, InvalidUserException {
+        if(jwtUtil.isTokenExpired(token)){
+            throw new ExpiredTokenException();
+        }
+
+        Long userId = jwtUtil.getUserIdByToken(token);
+        User savedUser = userService.findById(userId);
+
+        return savedUser;
+    }
+
+    /**
      * 리프레시 토큰으로 토큰 재발급
      * @param refreshToken String
      * @return TokenResponse
