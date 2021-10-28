@@ -16,7 +16,7 @@ import static lombok.AccessLevel.*;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @ToString
-@Table(name = "Grup")
+@Table(name = "\"Group\"")
 public class Group {
 
     @Id
@@ -25,7 +25,15 @@ public class Group {
 
     private String title;
 
+    private Long total;
+
     @OneToMany(mappedBy = "group")
     private List<ParticipantGroup> participantGroups = new ArrayList<>();
+
+    @OneToMany(mappedBy = "group")
+    private List<Notice> notices = new ArrayList<>();
+
+    @OneToMany(mappedBy = "group")
+    private List<Gallery> galleries = new ArrayList<>();
 
 }

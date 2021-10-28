@@ -1,7 +1,7 @@
 package dgrowth.com.one_server.domain.entity;
 
 import dgrowth.com.one_server.data.dto.response.TokenResponse;
-import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

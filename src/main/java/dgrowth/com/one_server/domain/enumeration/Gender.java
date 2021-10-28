@@ -1,4 +1,4 @@
-package dgrowth.com.one_server.data.enumeration;
+package dgrowth.com.one_server.domain.enumeration;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,9 +1,9 @@
 package dgrowth.com.one_server.domain.entity;
 
 import dgrowth.com.one_server.data.dto.response.UserResponse;
-import dgrowth.com.one_server.data.enumeration.Authority;
-import dgrowth.com.one_server.data.enumeration.Gender;
-import dgrowth.com.one_server.data.enumeration.PlatformType;
+import dgrowth.com.one_server.domain.enumeration.Authority;
+import dgrowth.com.one_server.domain.enumeration.Gender;
+import dgrowth.com.one_server.domain.enumeration.PlatformType;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +62,9 @@ public class User extends BaseEntity{
 
     @OneToMany(mappedBy = "user")
     private List<ParticipantGroup> participantGroups = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments = new ArrayList<>();
 
 
     public UserResponse toResponse(){

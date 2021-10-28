@@ -1,4 +1,4 @@
-package dgrowth.com.one_server.domain.repository;
+package dgrowth.com.one_server.repository;
 
 import dgrowth.com.one_server.domain.entity.UserToken;
 import org.springframework.data.jpa.repository.JpaRepository;

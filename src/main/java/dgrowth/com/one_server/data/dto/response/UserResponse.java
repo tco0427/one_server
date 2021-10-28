@@ -1,14 +1,10 @@
 package dgrowth.com.one_server.data.dto.response;
 
-import dgrowth.com.one_server.data.enumeration.Gender;
-import dgrowth.com.one_server.data.enumeration.PlatformType;
-import dgrowth.com.one_server.domain.entity.UserToken;
+import dgrowth.com.one_server.domain.enumeration.Gender;
+import dgrowth.com.one_server.domain.enumeration.PlatformType;
+
 import java.time.LocalDate;
-import java.util.Date;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

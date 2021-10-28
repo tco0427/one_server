@@ -1,8 +1,7 @@
 package dgrowth.com.one_server.service;
-
+import dgrowth.com.one_server.repository.ParticipantGroupRepository;
 import dgrowth.com.one_server.domain.entity.Group;
 import dgrowth.com.one_server.domain.entity.ParticipantGroup;
-import dgrowth.com.one_server.domain.repository.ParticipantGroupRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
