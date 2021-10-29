@@ -16,7 +16,7 @@ public class ParticipantGroupService {
 
     private final ParticipantGroupRepository participantGroupRepository;
 
-    public List<Group> findByUserId(Long userId, PageRequest pageRequest) {
+    public List<ParticipantGroup> findByUserId(Long userId, PageRequest pageRequest) {
         return participantGroupRepository.findByUserId(userId, pageRequest).getContent();
     }
 

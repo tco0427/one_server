@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ParticipantGroupRepository extends JpaRepository<ParticipantGroup, Long> {
-    Slice<Group> findByUserId(Long userId, Pageable pageable);
+    Slice<ParticipantGroup> findByUserId(Long userId, Pageable pageable);
 }
