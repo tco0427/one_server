@@ -23,11 +23,19 @@ public class Group {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    private Long hostId;
+    private Long hostId;    //그룹을 만든 UserId
 
-    private String title;
+    private String title;   //그룹명
 
-    private Long total;
+    private String groupImageUrl;   //그룹사진
+
+    private String description; //그룹설명
+
+    private String joinCondition;   //가입조건
+
+    private String place;   //장소
+
+    private String appointment;     //시간 및 장소
 
     @OneToMany(mappedBy = "group")
     private List<ParticipantGroup> participantGroups = new ArrayList<>();
@@ -37,5 +45,10 @@ public class Group {
 
     @OneToMany(mappedBy = "group")
     private List<Gallery> galleries = new ArrayList<>();
+
+    public Group(String title, Long hostId) {
+        this.title = title;
+        this.hostId = hostId;
+    }
 
 }
