@@ -1,6 +1,7 @@
 package dgrowth.com.one_server.service;
 
 import dgrowth.com.one_server.domain.entity.Group;
+import dgrowth.com.one_server.domain.repository.GroupRepository;
 import dgrowth.com.one_server.repository.GroupRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,10 @@ import java.util.List;
 public class GroupService {
 
     private final GroupRepository groupRepository;
+
+    public Group findById(Long id) {
+        return groupRepository.findById(id).get();
+    }
 
     public List<Group> findAll() {
         return groupRepository.findAll();
