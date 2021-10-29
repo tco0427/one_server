@@ -1,7 +1,6 @@
 package dgrowth.com.one_server.service;
 
 import dgrowth.com.one_server.domain.entity.Group;
-import dgrowth.com.one_server.domain.repository.GroupRepository;
 import dgrowth.com.one_server.repository.GroupRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

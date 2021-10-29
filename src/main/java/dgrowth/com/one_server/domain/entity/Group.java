@@ -1,5 +1,6 @@
 package dgrowth.com.one_server.domain.entity;
 
+import dgrowth.com.one_server.data.dto.response.GroupResponse;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -49,6 +50,11 @@ public class Group {
     public Group(String title, Long hostId) {
         this.title = title;
         this.hostId = hostId;
+    }
+
+    public GroupResponse toResponse() {
+        return new GroupResponse(id, title, hostId, groupImageUrl,
+                description, joinCondition, place, appointment);
     }
 
 }

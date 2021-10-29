@@ -1,7 +1,8 @@
 package dgrowth.com.one_server.controller;
 
-import dgrowth.com.one_server.data.dto.response.MyGroupParticipantListResponse;
+import dgrowth.com.one_server.data.dto.response.GroupResponse;
 import dgrowth.com.one_server.data.dto.response.Response;
+import dgrowth.com.one_server.data.dto.response.UserResponse;
 import dgrowth.com.one_server.data.property.ResponseMessage;
 import dgrowth.com.one_server.domain.entity.Group;
 import dgrowth.com.one_server.domain.entity.ParticipantGroup;
@@ -42,7 +43,7 @@ public class ParticipantGroupController {
     @GetMapping("{page}")
     public Response<MyGroupParticipantListResponse> getGroupListByUser(@PathVariable("page") Integer page, HttpServletRequest httpServletRequest) {
         Response<MyGroupParticipantListResponse> response = null;
-        MyGroupParticipantListResponse myGroupParticipantResponse;
+        MyGroupParticipantListResponse myGroupParticipantListResponse;
 
         try{
             String token = authService.getTokenByHeader(httpServletRequest);
@@ -64,13 +65,22 @@ public class ParticipantGroupController {
             List<MyGroupParticipantResponse> myGroupParticipantResponseList = new ArrayList<>();
 
             for (ParticipantGroup participantGroup : content) {
-                Long id = participantGroup.getGroup().getId();
+                Long groupId = participantGroup.getGroup().getId();
+                Group group = groupService.findById(groupId);
 
+                GroupResponse groupResponse = group.toResponse();
+
+                UserResponse userResponse = user.toResponse();
+
+                MyGroupParticipantResponse myGroupParticipantResponse = new MyGroupParticipantResponse(groupResponse, userResponse);
+
+                myGroupParticipantResponseList.add(myGroupParticipantResponse);
             }
 
 
+            myGroupParticipantListResponse = new MyGroupParticipantListResponse(myGroupParticipantResponseList);
 
-
+            return new Response<>(myGroupParticipantListResponse);
         } catch (InvalidUserException e) {
             return new Response<>(HttpStatus.NOT_FOUND, ResponseMessage.INVALID_USER);
         } catch (InvalidTokenException e) {
@@ -80,8 +90,15 @@ public class ParticipantGroupController {
 
     @Data
     @AllArgsConstructor
+    static class MyGroupParticipantListResponse {
+        private List<MyGroupParticipantResponse> myGroupParticipantResponses;
+    }
+
+    @Data
+    @AllArgsConstructor
     static class MyGroupParticipantResponse {
-        private Long groupId;
+        private GroupResponse groupResponse;
+        private UserResponse userResponse;
     }
 
 }
