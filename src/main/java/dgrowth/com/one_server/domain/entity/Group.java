@@ -23,6 +23,8 @@ public class Group {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    private Long hostId;
+
     private String title;
 
     private Long total;
