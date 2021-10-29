@@ -14,7 +14,7 @@ import static lombok.AccessLevel.*;
 @Getter
 @ToString
 @NoArgsConstructor(access = PROTECTED)
-public class ParticipantGroup {
+public class ParticipantGroup extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = IDENTITY)

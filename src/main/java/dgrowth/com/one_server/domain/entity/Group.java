@@ -18,7 +18,7 @@ import static lombok.AccessLevel.*;
 @NoArgsConstructor(access = PROTECTED)
 @ToString
 @Table(name = "\"Group\"")
-public class Group {
+public class Group extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -43,9 +43,6 @@ public class Group {
 
     @OneToMany(mappedBy = "group")
     private List<Notice> notices = new ArrayList<>();
-
-    @OneToMany(mappedBy = "group")
-    private List<Gallery> galleries = new ArrayList<>();
 
     public Group(String title, Long hostId) {
         this.title = title;

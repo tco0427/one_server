@@ -11,7 +11,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter
 @ToString(of = {"id"})
-public class Notice {
+public class Notice extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = IDENTITY)

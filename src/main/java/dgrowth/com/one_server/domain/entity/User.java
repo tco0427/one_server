@@ -63,9 +63,6 @@ public class User extends BaseEntity{
     @OneToMany(mappedBy = "user")
     private List<ParticipantGroup> participantGroups = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<Comment> comments = new ArrayList<>();
-
 
     public UserResponse toResponse(){
         return new UserResponse(id, platformType, platformId, name, email, profileImageUrl, gender, birth);
