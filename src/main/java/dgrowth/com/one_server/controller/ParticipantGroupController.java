@@ -77,7 +77,6 @@ public class ParticipantGroupController {
                 myGroupParticipantResponseList.add(myGroupParticipantResponse);
             }
 
-
             myGroupParticipantListResponse = new MyGroupParticipantListResponse(myGroupParticipantResponseList);
 
             return new Response<>(myGroupParticipantListResponse);

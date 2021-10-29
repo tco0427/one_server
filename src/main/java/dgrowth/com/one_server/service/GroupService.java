@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +17,8 @@ public class GroupService {
     private final GroupRepository groupRepository;
 
     public Group findById(Long id) {
-        return groupRepository.findById(id).get();
+        return groupRepository.findById(id)
+                .orElseThrow(NoSuchElementException::new);
     }
 
     public List<Group> findAll() {
