@@ -14,5 +14,6 @@ public class ResponseMessage {
     public static final String EXPIRED_TOKEN = "유효기간이 만료된 토큰입니다.";
     public static final String FAILED_TO_RE_ISSUE_TOKEN = "토큰 재발급에 실패했습니다.";
     public static final String INVALID_USER = "유저 ID에 해당하는 회원 정보가 없습니다.";
-    public static final String FAILED_TO_FIND_USER= "회원 정보 조회에 실패했습니다.";
+    public static final String FAILED_TO_FIND_USER = "회원 정보 조회에 실패했습니다.";
+    public static final String FAILED_TO_DELETE_GROUP = "그룹 삭제에 실패했습니다.";
 }

@@ -35,4 +35,8 @@ public class GroupService {
     public void deleteById(Long id) {
         groupRepository.deleteById(id);
     }
+
+    public List<Group> findByHostId(Long hostId) {
+        groupRepository.findByHostId(hostId);
+    }
 }
