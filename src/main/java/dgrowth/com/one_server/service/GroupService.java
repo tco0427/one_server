@@ -37,6 +37,6 @@ public class GroupService {
     }
 
     public List<Group> findByHostId(Long hostId) {
-        groupRepository.findByHostId(hostId);
+        return groupRepository.findByHostId(hostId);
     }
 }
