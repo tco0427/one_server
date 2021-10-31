@@ -20,10 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -100,4 +97,54 @@ public class ParticipantGroupController {
         private UserResponse userResponse;
     }
 
+    @PostMapping("/new")
+    public Response<ParticipantGroupResponse> groupParticipate(HttpServletRequest httpServletRequest, @RequestBody ParticipantGroupRequest request) {
+        Response<ParticipantGroupResponse> response = null;
+        ParticipantGroupResponse participantGroupResponse;
+
+        try{
+            String token = authService.getTokenByHeader(httpServletRequest);
+
+            boolean tokenExpired = jwtUtil.isTokenExpired(token);
+
+            if(tokenExpired == true) {
+                return new Response<>(HttpStatus.UNAUTHORIZED, ResponseMessage.EXPIRED_TOKEN);
+            }
+
+            Long userId = jwtUtil.getUserIdByToken(token);
+
+            User user = userService.findById(userId);
+
+            Long groupId = request.getGropuId();
+
+            Group group = groupService.findById(groupId);
+
+            ParticipantGroup participantGroup = new ParticipantGroup(user, group);
+
+            Long savedId = participantGroupService.save(participantGroup);
+
+            participantGroupResponse = new ParticipantGroupResponse(group.getId(), group.getTitle(), group.getDescription());
+
+            return new Response<>(participantGroupResponse);
+
+        } catch (InvalidTokenException e) {
+            return new Response<>(HttpStatus.UNAUTHORIZED, ResponseMessage.INVALID_TOKEN);
+        } catch (InvalidUserException e) {
+            return new Response<>(HttpStatus.NOT_FOUND, ResponseMessage.INVALID_USER);
+        }
+    }
+
+    @Data
+    static class ParticipantGroupRequest {
+        private Long gropuId;
+    }
+
+
+    @Data
+    @AllArgsConstructor
+    static class ParticipantGroupResponse {
+        private Long groupId;
+        private String title;
+        private String description;
+    }
 }

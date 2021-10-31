@@ -25,4 +25,10 @@ public class ParticipantGroupService {
 
         return savedParticipantGroup.getId();
     }
+
+    @Transactional
+    public Long save(ParticipantGroup participantGroup) {
+        ParticipantGroup savedParticipantGroup = participantGroupRepository.save(participantGroup);
+        return savedParticipantGroup.getId();
+    }
 }

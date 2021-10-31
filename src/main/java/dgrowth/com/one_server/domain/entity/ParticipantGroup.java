@@ -25,4 +25,9 @@ public class ParticipantGroup extends BaseEntity{
 
     @ManyToOne(fetch = LAZY)
     private User user;
+
+    public ParticipantGroup(User user, Group group) {
+        this.user = user;
+        this.group = group;
+    }
 }
