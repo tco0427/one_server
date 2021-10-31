@@ -1,8 +1,12 @@
 package dgrowth.com.one_server.domain.entity;
 
 import dgrowth.com.one_server.data.dto.response.GroupResponse;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -14,8 +18,10 @@ import static javax.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
 @Entity
+@Builder
 @Getter
-@NoArgsConstructor(access = PROTECTED)
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
 @Table(name = "\"Group\"")
 public class Group extends BaseEntity{
@@ -36,18 +42,23 @@ public class Group extends BaseEntity{
 
     private String place;   //장소
 
-    private String appointment;     //시간 및 장소
+    private String appointment;     //요일 및 시간
+
+    public Group(String title, String groupImageUrl, String description,
+        String joinCondition, String place, String appointment) {
+        this.title = title;
+        this.groupImageUrl = groupImageUrl;
+        this.description = description;
+        this.joinCondition = joinCondition;
+        this.place = place;
+        this.appointment = appointment;
+    }
 
     @OneToMany(mappedBy = "group")
     private List<ParticipantGroup> participantGroups = new ArrayList<>();
 
     @OneToMany(mappedBy = "group")
     private List<Notice> notices = new ArrayList<>();
-
-    public Group(String title, Long hostId) {
-        this.title = title;
-        this.hostId = hostId;
-    }
 
     public GroupResponse toResponse() {
         return new GroupResponse(id, title, hostId, groupImageUrl,
