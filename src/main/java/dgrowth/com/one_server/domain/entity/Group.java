@@ -1,6 +1,5 @@
 package dgrowth.com.one_server.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import dgrowth.com.one_server.domain.enumeration.Category;
 import java.time.DayOfWeek;
 import java.time.LocalTime;

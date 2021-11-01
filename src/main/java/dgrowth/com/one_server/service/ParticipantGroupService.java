@@ -1,9 +1,7 @@
 package dgrowth.com.one_server.service;
-import dgrowth.com.one_server.controller.ParticipantGroupController;
 import dgrowth.com.one_server.data.dto.mapper.GroupMapper;
 import dgrowth.com.one_server.data.dto.request.ParticipantGroupRequest;
 import dgrowth.com.one_server.data.dto.response.*;
-import dgrowth.com.one_server.data.property.ResponseMessage;
 import dgrowth.com.one_server.domain.entity.User;
 import dgrowth.com.one_server.exception.ExpiredTokenException;
 import dgrowth.com.one_server.exception.InvalidTokenException;
@@ -11,12 +9,9 @@ import dgrowth.com.one_server.exception.InvalidUserException;
 import dgrowth.com.one_server.repository.ParticipantGroupRepository;
 import dgrowth.com.one_server.domain.entity.Group;
 import dgrowth.com.one_server.domain.entity.ParticipantGroup;
-import dgrowth.com.one_server.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

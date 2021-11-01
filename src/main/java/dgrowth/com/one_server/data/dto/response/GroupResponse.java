@@ -1,7 +1,5 @@
 package dgrowth.com.one_server.data.dto.response;
 
-import static javax.persistence.EnumType.STRING;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import dgrowth.com.one_server.domain.enumeration.Category;
