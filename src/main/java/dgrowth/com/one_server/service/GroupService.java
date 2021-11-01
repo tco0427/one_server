@@ -48,10 +48,8 @@ public class GroupService {
             groupResponse = GroupMapper.INSTANCE.toDto(group);
         } catch (InvalidTokenException | ExpiredTokenException e) {
             e.printStackTrace();
-            throw new RuntimeException("Token Error");
         } catch (InvalidUserException e) {
             e.printStackTrace();
-            throw new RuntimeException("Invalid User Error");
         }
 
         return groupResponse;
@@ -79,10 +77,8 @@ public class GroupService {
 
         } catch (InvalidTokenException | ExpiredTokenException e) {
             e.printStackTrace();
-            throw new RuntimeException("Token Error");
         } catch (InvalidUserException e) {
             e.printStackTrace();
-            throw new RuntimeException("Invalid User Error");
         }
 
         return groupResponseList;
@@ -106,10 +102,8 @@ public class GroupService {
             groupResponse = GroupMapper.INSTANCE.toDto(savedGroup);
         }catch (InvalidTokenException | ExpiredTokenException e) {
             e.printStackTrace();
-            throw new RuntimeException("Token Error");
         } catch (InvalidUserException e) {
             e.printStackTrace();
-            throw new RuntimeException("Invalid User Error");
         }
 
         return groupResponse;
@@ -135,10 +129,8 @@ public class GroupService {
 
         }catch (InvalidTokenException | ExpiredTokenException e) {
             e.printStackTrace();
-            throw new RuntimeException("Token Error");
         } catch (InvalidUserException e) {
             e.printStackTrace();
-            throw new RuntimeException("Invalid User Error");
         }
 
         return deleteGroupResponse;

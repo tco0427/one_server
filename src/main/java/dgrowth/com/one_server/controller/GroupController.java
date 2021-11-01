@@ -36,9 +36,6 @@ import java.util.List;
 public class GroupController {
 
     private final GroupService groupService;
-    private final AuthService authService;
-    private final UserService userService;
-    private final JwtUtil jwtUtil;
 
     @ApiOperation(value = "", notes = "내가 만든 그룹 삭제")
     @DeleteMapping("/delete/{groupId}")

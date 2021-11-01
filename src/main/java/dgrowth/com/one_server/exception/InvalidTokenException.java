@@ -5,7 +5,7 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public class InvalidTokenException extends Exception{
+public class InvalidTokenException extends RuntimeException{
     HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
     String message = ResponseMessage.INVALID_TOKEN;
 }

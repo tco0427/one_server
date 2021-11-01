@@ -1,8 +1,7 @@
 package dgrowth.com.one_server.controller;
 
-import dgrowth.com.one_server.data.dto.response.GroupResponse;
-import dgrowth.com.one_server.data.dto.response.Response;
-import dgrowth.com.one_server.data.dto.response.UserResponse;
+import dgrowth.com.one_server.data.dto.request.ParticipantGroupRequest;
+import dgrowth.com.one_server.data.dto.response.*;
 import dgrowth.com.one_server.data.property.ResponseMessage;
 import dgrowth.com.one_server.domain.entity.Group;
 import dgrowth.com.one_server.domain.entity.ParticipantGroup;
@@ -20,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,119 +32,15 @@ import java.util.List;
 public class ParticipantGroupController {
 
     private final ParticipantGroupService participantGroupService;
-    private final GroupService groupService;
-    private final AuthService authService;
-    private final UserService userService;
-    private final JwtUtil jwtUtil;
 
-    @GetMapping("{page}")
-    public Response<MyGroupParticipantListResponse> getGroupListByUser(@PathVariable("page") Integer page, HttpServletRequest httpServletRequest) {
-        Response<MyGroupParticipantListResponse> response = null;
-        MyGroupParticipantListResponse myGroupParticipantListResponse;
+    @GetMapping("/{page}")
+    public ResponseEntity<MyGroupParticipantListResponse> getGroupListByUser(@PathVariable("page") Integer page, HttpServletRequest httpServletRequest) {
+        return ResponseEntity.ok().body(participantGroupService.findByUser(page, httpServletRequest));
 
-        try{
-            String token = authService.getTokenByHeader(httpServletRequest);
-
-            boolean tokenExpired = jwtUtil.isTokenExpired(token);
-
-            if(tokenExpired == true) {
-                return new Response<>(HttpStatus.UNAUTHORIZED, ResponseMessage.EXPIRED_TOKEN);
-            }
-
-            Long userId = jwtUtil.getUserIdByToken(token);
-
-            User user = userService.findById(userId);
-
-            PageRequest pageRequest = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdDate"));
-
-            List<ParticipantGroup> content = participantGroupService.findByUserId(user.getId(), pageRequest);
-
-            List<MyGroupParticipantResponse> myGroupParticipantResponseList = new ArrayList<>();
-
-            for (ParticipantGroup participantGroup : content) {
-                Long groupId = participantGroup.getGroup().getId();
-                Group group = groupService.findById(groupId);
-
-                GroupResponse groupResponse = group.toResponse();
-
-                UserResponse userResponse = user.toResponse();
-
-                MyGroupParticipantResponse myGroupParticipantResponse = new MyGroupParticipantResponse(groupResponse, userResponse);
-
-                myGroupParticipantResponseList.add(myGroupParticipantResponse);
-            }
-
-            myGroupParticipantListResponse = new MyGroupParticipantListResponse(myGroupParticipantResponseList);
-
-            return new Response<>(myGroupParticipantListResponse);
-        } catch (InvalidUserException e) {
-            return new Response<>(HttpStatus.NOT_FOUND, ResponseMessage.INVALID_USER);
-        } catch (InvalidTokenException e) {
-            return new Response<>(HttpStatus.UNAUTHORIZED, ResponseMessage.INVALID_TOKEN);
-        }
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class MyGroupParticipantListResponse {
-        private List<MyGroupParticipantResponse> myGroupParticipantResponses;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class MyGroupParticipantResponse {
-        private GroupResponse groupResponse;
-        private UserResponse userResponse;
     }
 
     @PostMapping("/new")
-    public Response<ParticipantGroupResponse> groupParticipate(HttpServletRequest httpServletRequest, @RequestBody ParticipantGroupRequest request) {
-        Response<ParticipantGroupResponse> response = null;
-        ParticipantGroupResponse participantGroupResponse;
-
-        try{
-            String token = authService.getTokenByHeader(httpServletRequest);
-
-            boolean tokenExpired = jwtUtil.isTokenExpired(token);
-
-            if(tokenExpired == true) {
-                return new Response<>(HttpStatus.UNAUTHORIZED, ResponseMessage.EXPIRED_TOKEN);
-            }
-
-            Long userId = jwtUtil.getUserIdByToken(token);
-
-            User user = userService.findById(userId);
-
-            Long groupId = request.getGropuId();
-
-            Group group = groupService.findById(groupId);
-
-            ParticipantGroup participantGroup = new ParticipantGroup(user, group);
-
-            Long savedId = participantGroupService.save(participantGroup);
-
-            participantGroupResponse = new ParticipantGroupResponse(group.getId(), group.getTitle(), group.getDescription());
-
-            return new Response<>(participantGroupResponse);
-
-        } catch (InvalidTokenException e) {
-            return new Response<>(HttpStatus.UNAUTHORIZED, ResponseMessage.INVALID_TOKEN);
-        } catch (InvalidUserException e) {
-            return new Response<>(HttpStatus.NOT_FOUND, ResponseMessage.INVALID_USER);
-        }
-    }
-
-    @Data
-    static class ParticipantGroupRequest {
-        private Long gropuId;
-    }
-
-
-    @Data
-    @AllArgsConstructor
-    static class ParticipantGroupResponse {
-        private Long groupId;
-        private String title;
-        private String description;
+    public ResponseEntity<ParticipantGroupResponse> groupParticipate(@RequestBody ParticipantGroupRequest request, HttpServletRequest httpServletRequest) {
+        return ResponseEntity.ok().body(participantGroupService.participant(request, httpServletRequest));
     }
 }

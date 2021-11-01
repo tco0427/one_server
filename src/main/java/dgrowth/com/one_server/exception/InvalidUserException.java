@@ -5,7 +5,7 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public class InvalidUserException extends Exception{
+public class InvalidUserException extends RuntimeException{
     HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
     String message = ResponseMessage.INVALID_USER;
 }

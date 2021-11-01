@@ -5,7 +5,7 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public class ExpiredTokenException extends Exception{
+public class ExpiredTokenException extends RuntimeException{
     HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
     String message = ResponseMessage.EXPIRED_TOKEN;
 }
