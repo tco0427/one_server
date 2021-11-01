@@ -1,12 +1,12 @@
 package dgrowth.com.one_server.domain.entity;
 
-import dgrowth.com.one_server.data.dto.response.GroupResponse;
+import dgrowth.com.one_server.domain.enumeration.Category;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -14,8 +14,8 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.*;
-import static lombok.AccessLevel.*;
 
 @Entity
 @Builder
@@ -42,16 +42,23 @@ public class Group extends BaseEntity{
 
     private String place;   //장소
 
-    private String appointment;     //요일 및 시간
+    private DayOfWeek dayOfWeek;     //요일
+
+    private LocalTime time; // 시간
+
+    @Enumerated(STRING)
+    private Category category;  // 카테고리
 
     public Group(String title, String groupImageUrl, String description,
-        String joinCondition, String place, String appointment) {
+        String joinCondition, String place, DayOfWeek dayOfWeek, LocalTime time, Category category) {
         this.title = title;
         this.groupImageUrl = groupImageUrl;
         this.description = description;
         this.joinCondition = joinCondition;
         this.place = place;
-        this.appointment = appointment;
+        this.dayOfWeek = dayOfWeek;
+        this.time = time;
+        this.category = category;
     }
 
     @OneToMany(mappedBy = "group")
@@ -59,10 +66,4 @@ public class Group extends BaseEntity{
 
     @OneToMany(mappedBy = "group")
     private List<Notice> notices = new ArrayList<>();
-
-    public GroupResponse toResponse() {
-        return new GroupResponse(id, title, hostId, groupImageUrl,
-                description, joinCondition, place, appointment);
-    }
-
 }

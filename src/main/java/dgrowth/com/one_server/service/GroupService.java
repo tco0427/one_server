@@ -1,21 +1,18 @@
 package dgrowth.com.one_server.service;
 
-import dgrowth.com.one_server.controller.GroupController;
+
 import dgrowth.com.one_server.data.dto.mapper.GroupMapper;
 import dgrowth.com.one_server.data.dto.request.GroupRequest;
 import dgrowth.com.one_server.data.dto.response.DeleteGroupResponse;
 import dgrowth.com.one_server.data.dto.response.GroupResponse;
-import dgrowth.com.one_server.data.dto.response.Response;
-import dgrowth.com.one_server.data.property.ResponseMessage;
 import dgrowth.com.one_server.domain.entity.Group;
+import dgrowth.com.one_server.domain.enumeration.Category;
 import dgrowth.com.one_server.exception.ExpiredTokenException;
 import dgrowth.com.one_server.exception.InvalidTokenException;
 import dgrowth.com.one_server.exception.InvalidUserException;
 import dgrowth.com.one_server.repository.GroupRepository;
-import java.nio.file.AccessDeniedException;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,7 +57,7 @@ public class GroupService {
         return groupResponse;
     }
 
-    public List<GroupResponse> findAll(HttpServletRequest httpServletRequest) {
+    public List<GroupResponse> findAll(Category category, HttpServletRequest httpServletRequest) {
         List<GroupResponse> groupResponseList = null;
         try {
             // 1. 헤더에서 토큰 체크
@@ -70,7 +67,12 @@ public class GroupService {
             Long hostId = authService.getUserInfoByToken(token).getId();
 
             // 3. 그룹 전체 조회
-            List<Group> groups = groupRepository.findAll();
+            List<Group> groups = null;
+            if (category == null) {
+                groups = groupRepository.findAll();
+            } else {
+                groups = groupRepository.findAllByCategory(category);
+            }
 
             // 4. Response 생성
             groupResponseList = GroupMapper.INSTANCE.toDto(groups);

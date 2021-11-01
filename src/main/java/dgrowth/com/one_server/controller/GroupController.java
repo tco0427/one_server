@@ -7,6 +7,7 @@ import dgrowth.com.one_server.data.dto.response.Response;
 import dgrowth.com.one_server.data.property.ResponseMessage;
 import dgrowth.com.one_server.domain.entity.Group;
 import dgrowth.com.one_server.domain.entity.User;
+import dgrowth.com.one_server.domain.enumeration.Category;
 import dgrowth.com.one_server.exception.InvalidTokenException;
 import dgrowth.com.one_server.service.AuthService;
 import dgrowth.com.one_server.service.GroupService;
@@ -53,7 +54,12 @@ public class GroupController {
 
     @GetMapping("/all")
     public ResponseEntity<List<GroupResponse>> all(HttpServletRequest httpServletRequest) {
-        return ResponseEntity.ok().body(groupService.findAll(httpServletRequest));
+        return ResponseEntity.ok().body(groupService.findAll(null, httpServletRequest));
+    }
+
+    @GetMapping("/all/{category}")
+    public ResponseEntity<List<GroupResponse>> allByCategory(@PathVariable("category") Category category, HttpServletRequest httpServletRequest) {
+        return ResponseEntity.ok().body(groupService.findAll(category, httpServletRequest));
     }
 
     @GetMapping("/info/{groupId}")
