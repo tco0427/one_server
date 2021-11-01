@@ -1,8 +1,12 @@
 package dgrowth.com.one_server.service;
 
+import dgrowth.com.one_server.controller.GroupController;
 import dgrowth.com.one_server.data.dto.mapper.GroupMapper;
 import dgrowth.com.one_server.data.dto.request.GroupRequest;
+import dgrowth.com.one_server.data.dto.response.DeleteGroupResponse;
 import dgrowth.com.one_server.data.dto.response.GroupResponse;
+import dgrowth.com.one_server.data.dto.response.Response;
+import dgrowth.com.one_server.data.property.ResponseMessage;
 import dgrowth.com.one_server.domain.entity.Group;
 import dgrowth.com.one_server.exception.ExpiredTokenException;
 import dgrowth.com.one_server.exception.InvalidTokenException;
@@ -11,6 +15,7 @@ import dgrowth.com.one_server.repository.GroupRepository;
 import java.nio.file.AccessDeniedException;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -109,8 +114,32 @@ public class GroupService {
     }
 
     @Transactional
-    public void deleteById(Long id) {
-        groupRepository.deleteById(id);
+    public DeleteGroupResponse deleteById(HttpServletRequest httpServletRequest, Long groupId) {
+        DeleteGroupResponse deleteGroupResponse = null;
+
+        try {
+            String token = authService.getTokenByHeader(httpServletRequest);
+
+            Long userId = authService.getUserInfoByToken(token).getId();
+
+            List<Group> groupList = groupRepository.findByHostId(userId);
+
+            for (Group group : groupList) {
+                if (group.getId() == groupId) {
+                    groupRepository.deleteById(groupId);
+                    deleteGroupResponse = new DeleteGroupResponse(group);
+                }
+            }
+
+        }catch (InvalidTokenException | ExpiredTokenException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Token Error");
+        } catch (InvalidUserException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Invalid User Error");
+        }
+
+        return deleteGroupResponse;
     }
 
     public List<Group> findByHostId(Long hostId) {

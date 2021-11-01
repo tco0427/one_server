@@ -1,6 +1,7 @@
 package dgrowth.com.one_server.controller;
 
 import dgrowth.com.one_server.data.dto.request.GroupRequest;
+import dgrowth.com.one_server.data.dto.response.DeleteGroupResponse;
 import dgrowth.com.one_server.data.dto.response.GroupResponse;
 import dgrowth.com.one_server.data.dto.response.Response;
 import dgrowth.com.one_server.data.property.ResponseMessage;
@@ -40,64 +41,23 @@ public class GroupController {
 
     @ApiOperation(value = "", notes = "내가 만든 그룹 삭제")
     @DeleteMapping("/delete/{groupId}")
-    public Response<DeleteGroupResponse> deleteGroupByUser(HttpServletRequest request, @PathVariable("groupId") Long groupId) {
-        Response<DeleteGroupResponse> response = null;
-        DeleteGroupResponse deleteGroupResponse;
-
-
-        try{
-            String token = authService.getTokenByHeader(request);
-
-            boolean tokenExpired = jwtUtil.isTokenExpired(token);
-
-            if(tokenExpired == true) {
-                return new Response<>(HttpStatus.UNAUTHORIZED, ResponseMessage.EXPIRED_TOKEN);
-            }
-
-            Long userId = jwtUtil.getUserIdByToken(token);
-
-            List<Group> groupList = groupService.findByHostId(userId);
-
-            for (Group group : groupList) {
-                if (group.getId() == groupId) {
-                    groupService.deleteById(groupId);
-                    deleteGroupResponse = new DeleteGroupResponse(group);
-                    return new Response<>(deleteGroupResponse);
-                }
-            }
-
-            return new Response<>(HttpStatus.BAD_REQUEST, ResponseMessage.FAILED_TO_DELETE_GROUP);
-
-        } catch (InvalidTokenException e) {
-            return new Response<>(HttpStatus.UNAUTHORIZED, ResponseMessage.INVALID_TOKEN);
-        }
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class DeleteGroupResponse {
-        private Long id;
-        private String title;
-
-        public DeleteGroupResponse(Group group) {
-            this.id = group.getId();
-            this.title = group.getTitle();
-        }
+    public ResponseEntity<DeleteGroupResponse> deleteGroupByUser(HttpServletRequest request, @PathVariable("groupId") Long groupId) {
+        return ResponseEntity.ok().body(groupService.deleteById(request, groupId));
     }
 
     @PostMapping("/create")
     public ResponseEntity<GroupResponse> create(@RequestBody GroupRequest groupRequest,
         HttpServletRequest httpServletRequest) {
-        return ResponseEntity.ok(groupService.save(groupRequest, httpServletRequest));
+        return ResponseEntity.ok().body(groupService.save(groupRequest, httpServletRequest));
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<GroupResponse>> all(HttpServletRequest httpServletRequest) {
-        return ResponseEntity.ok(groupService.findAll(httpServletRequest));
+        return ResponseEntity.ok().body(groupService.findAll(httpServletRequest));
     }
 
     @GetMapping("/info/{groupId}")
     public ResponseEntity<GroupResponse> info(HttpServletRequest httpServletRequest, @PathVariable("groupId") Long groupId) {
-        return ResponseEntity.ok(groupService.groupInfoById(httpServletRequest, groupId));
+        return ResponseEntity.ok().body(groupService.groupInfoById(httpServletRequest, groupId));
     }
 }
