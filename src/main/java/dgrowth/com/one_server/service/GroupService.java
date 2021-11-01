@@ -97,9 +97,11 @@ public class GroupService {
             // 3. 그룹 생성 및 저장
             Group newGroup = GroupMapper.INSTANCE.requestToEntity(groupRequest, hostId);
             Group savedGroup = groupRepository.save(newGroup);
+            System.out.println("savedGroup = " + savedGroup.toString());
 
             // 4. Response 생성
             groupResponse = GroupMapper.INSTANCE.toDto(savedGroup);
+            System.out.println("groupResponse = " + groupResponse.toString());
         }catch (InvalidTokenException | ExpiredTokenException e) {
             e.printStackTrace();
         } catch (InvalidUserException e) {

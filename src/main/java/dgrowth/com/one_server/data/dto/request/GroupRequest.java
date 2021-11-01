@@ -23,14 +23,10 @@ public class GroupRequest {
 
     private String place;   //장소
 
-    private String appointment;     //요일 및 시간
-
-    private Category category;  // 카테고리
-
     private DayOfWeek dayOfWeek;     //요일
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
-    @DateTimeFormat(pattern = "HH:mm")
     private LocalTime time;
 
+    private Category category;  // 카테고리
 }

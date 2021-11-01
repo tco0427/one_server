@@ -7,9 +7,10 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
-public interface GroupMapper extends EntityMapper<GroupResponse, Group>{
+public interface GroupMapper extends EntityMapper<GroupResponse, Group>  {
 
     GroupMapper INSTANCE = Mappers.getMapper(GroupMapper.class);
 
     Group requestToEntity(GroupRequest groupRequest, Long hostId);
+
 }

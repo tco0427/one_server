@@ -1,5 +1,6 @@
 package dgrowth.com.one_server.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import dgrowth.com.one_server.domain.enumeration.Category;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -13,6 +14,7 @@ import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.*;
@@ -44,6 +46,7 @@ public class Group extends BaseEntity{
 
     private DayOfWeek dayOfWeek;     //요일
 
+    @DateTimeFormat(pattern = "HH:mm")
     private LocalTime time; // 시간
 
     @Enumerated(STRING)
