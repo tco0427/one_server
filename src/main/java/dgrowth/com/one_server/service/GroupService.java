@@ -7,9 +7,6 @@ import dgrowth.com.one_server.data.dto.response.DeleteGroupResponse;
 import dgrowth.com.one_server.data.dto.response.GroupResponse;
 import dgrowth.com.one_server.domain.entity.Group;
 import dgrowth.com.one_server.domain.enumeration.Category;
-import dgrowth.com.one_server.exception.ExpiredTokenException;
-import dgrowth.com.one_server.exception.InvalidTokenException;
-import dgrowth.com.one_server.exception.InvalidUserException;
 import dgrowth.com.one_server.repository.GroupRepository;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -29,57 +26,44 @@ public class GroupService {
 
     public Group findById(Long id) {
         return groupRepository.findById(id)
-                .orElseThrow(NoSuchElementException::new);
+            .orElseThrow(NoSuchElementException::new);
     }
 
-    public GroupResponse groupInfoById(HttpServletRequest httpServletRequest, Long id){
+    public GroupResponse groupInfoById(HttpServletRequest httpServletRequest, Long id) {
         GroupResponse groupResponse = null;
-        try {
-            // 1. 헤더에서 토큰 체크
-            String token = authService.getTokenByHeader(httpServletRequest);
+        // 1. 헤더에서 토큰 체크
+        String token = authService.getTokenByHeader(httpServletRequest);
 
-            // 2. 토큰 유효성 체크 및 유저 불러오기
-            Long hostId = authService.getUserInfoByToken(token).getId();
+        // 2. 토큰 유효성 체크 및 유저 불러오기
+        Long hostId = authService.getUserInfoByToken(token).getId();
 
-            // 3. 그룹 조회
-            Group group = findById(id);
+        // 3. 그룹 조회
+        Group group = findById(id);
 
-            // 4. Response 생성
-            groupResponse = GroupMapper.INSTANCE.toDto(group);
-        } catch (InvalidTokenException | ExpiredTokenException e) {
-            e.printStackTrace();
-        } catch (InvalidUserException e) {
-            e.printStackTrace();
-        }
+        // 4. Response 생성
+        groupResponse = GroupMapper.INSTANCE.toDto(group);
 
         return groupResponse;
     }
 
     public List<GroupResponse> findAll(Category category, HttpServletRequest httpServletRequest) {
         List<GroupResponse> groupResponseList = null;
-        try {
-            // 1. 헤더에서 토큰 체크
-            String token = authService.getTokenByHeader(httpServletRequest);
+        // 1. 헤더에서 토큰 체크
+        String token = authService.getTokenByHeader(httpServletRequest);
 
-            // 2. 토큰 유효성 체크 및 유저 불러오기
-            Long hostId = authService.getUserInfoByToken(token).getId();
+        // 2. 토큰 유효성 체크 및 유저 불러오기
+        Long hostId = authService.getUserInfoByToken(token).getId();
 
-            // 3. 그룹 전체 조회
-            List<Group> groups = null;
-            if (category == null) {
-                groups = groupRepository.findAll();
-            } else {
-                groups = groupRepository.findAllByCategory(category);
-            }
-
-            // 4. Response 생성
-            groupResponseList = GroupMapper.INSTANCE.toDto(groups);
-
-        } catch (InvalidTokenException | ExpiredTokenException e) {
-            e.printStackTrace();
-        } catch (InvalidUserException e) {
-            e.printStackTrace();
+        // 3. 그룹 전체 조회
+        List<Group> groups = null;
+        if (category == null) {
+            groups = groupRepository.findAll();
+        } else {
+            groups = groupRepository.findAllByCategory(category);
         }
+
+        // 4. Response 생성
+        groupResponseList = GroupMapper.INSTANCE.toDto(groups);
 
         return groupResponseList;
     }
@@ -87,26 +71,18 @@ public class GroupService {
     @Transactional
     public GroupResponse save(GroupRequest groupRequest, HttpServletRequest httpServletRequest) {
         GroupResponse groupResponse = null;
-        try {
-            // 1. 헤더에서 토큰 체크
-            String token = authService.getTokenByHeader(httpServletRequest);
+        // 1. 헤더에서 토큰 체크
+        String token = authService.getTokenByHeader(httpServletRequest);
 
-            // 2. 토큰 유효성 체크 및 유저 불러오기
-            Long hostId = authService.getUserInfoByToken(token).getId();
+        // 2. 토큰 유효성 체크 및 유저 불러오기
+        Long hostId = authService.getUserInfoByToken(token).getId();
 
-            // 3. 그룹 생성 및 저장
-            Group newGroup = GroupMapper.INSTANCE.requestToEntity(groupRequest, hostId);
-            Group savedGroup = groupRepository.save(newGroup);
-            System.out.println("savedGroup = " + savedGroup.toString());
+        // 3. 그룹 생성 및 저장
+        Group newGroup = GroupMapper.INSTANCE.requestToEntity(groupRequest, hostId);
+        Group savedGroup = groupRepository.save(newGroup);
 
-            // 4. Response 생성
-            groupResponse = GroupMapper.INSTANCE.toDto(savedGroup);
-            System.out.println("groupResponse = " + groupResponse.toString());
-        }catch (InvalidTokenException | ExpiredTokenException e) {
-            e.printStackTrace();
-        } catch (InvalidUserException e) {
-            e.printStackTrace();
-        }
+        // 4. Response 생성
+        groupResponse = GroupMapper.INSTANCE.toDto(savedGroup);
 
         return groupResponse;
     }
@@ -115,24 +91,17 @@ public class GroupService {
     public DeleteGroupResponse deleteById(HttpServletRequest httpServletRequest, Long groupId) {
         DeleteGroupResponse deleteGroupResponse = null;
 
-        try {
-            String token = authService.getTokenByHeader(httpServletRequest);
+        String token = authService.getTokenByHeader(httpServletRequest);
 
-            Long userId = authService.getUserInfoByToken(token).getId();
+        Long userId = authService.getUserInfoByToken(token).getId();
 
-            List<Group> groupList = groupRepository.findByHostId(userId);
+        List<Group> groupList = groupRepository.findByHostId(userId);
 
-            for (Group group : groupList) {
-                if (group.getId() == groupId) {
-                    groupRepository.deleteById(groupId);
-                    deleteGroupResponse = new DeleteGroupResponse(group);
-                }
+        for (Group group : groupList) {
+            if (group.getId() == groupId) {
+                groupRepository.deleteById(groupId);
+                deleteGroupResponse = new DeleteGroupResponse(group);
             }
-
-        }catch (InvalidTokenException | ExpiredTokenException e) {
-            e.printStackTrace();
-        } catch (InvalidUserException e) {
-            e.printStackTrace();
         }
 
         return deleteGroupResponse;

@@ -6,6 +6,11 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public class DuplicatedUserException extends RuntimeException {
+    private static final String message = ResponseMessage.DUPLICATED_USER;
+
     HttpStatus httpStatus = HttpStatus.NOT_FOUND;
-    String message = ResponseMessage.DUPLICATED_USER;
+
+    public DuplicatedUserException() {
+        super(message);
+    }
 }

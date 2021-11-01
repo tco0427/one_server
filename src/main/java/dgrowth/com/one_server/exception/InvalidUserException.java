@@ -6,6 +6,11 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public class InvalidUserException extends RuntimeException{
+    private final static String message = ResponseMessage.INVALID_USER;
+
     HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
-    String message = ResponseMessage.INVALID_USER;
+
+    public InvalidUserException() {
+        super(message);
+    }
 }

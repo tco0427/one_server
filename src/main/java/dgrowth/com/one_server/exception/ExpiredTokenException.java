@@ -6,6 +6,11 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public class ExpiredTokenException extends RuntimeException{
+    private static final String message = ResponseMessage.EXPIRED_TOKEN;
+
     HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
-    String message = ResponseMessage.EXPIRED_TOKEN;
+
+    public ExpiredTokenException() {
+        super(message);
+    }
 }
