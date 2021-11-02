@@ -83,6 +83,8 @@ public class ParticipantGroupService {
 
         ParticipantGroup participantGroup = new ParticipantGroup(user, group);
 
+        participantGroupRepository.save(participantGroup);
+
         participantGroupResponse = new ParticipantGroupResponse(group.getId(), group.getTitle(),
             group.getDescription());
 
