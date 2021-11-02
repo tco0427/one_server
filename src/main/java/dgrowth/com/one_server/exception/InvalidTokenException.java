@@ -5,7 +5,7 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Gette
+@Getter
 @ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = ResponseMessage.INVALID_TOKEN) // main으로부터 생성됨
 public class InvalidTokenException extends RuntimeException{
     private final static String message = ResponseMessage.INVALID_TOKEN;
