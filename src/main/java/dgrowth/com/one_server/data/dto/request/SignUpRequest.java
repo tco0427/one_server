@@ -6,11 +6,14 @@ import dgrowth.com.one_server.domain.enumeration.Gender;
 import dgrowth.com.one_server.domain.enumeration.PlatformType;
 import dgrowth.com.one_server.domain.entity.User;
 import java.time.LocalDate;
-
+import java.util.Arrays;
+import java.util.Base64;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 @Data
+@Slf4j
 @AllArgsConstructor
 public class SignUpRequest {
 
@@ -26,21 +29,21 @@ public class SignUpRequest {
     // 이메일
     private String email;
 
-    // 성별
-    private Gender gender;
-
-    // 생년월일(yymmdd)
-    @JsonFormat(pattern="yyyy-MM-dd")
-    private LocalDate birth;
-
     // 프로필 이미지
     private String profileImageUrl;
 
     // 학생증 이미지
-    private String idCardImageUrl;
+    private String idCardImage;
+
+    public void decodeIdCardImage() {
+        idCardImage = Arrays.toString(Base64.getDecoder().decode(idCardImage));
+        // TODO 디코딩 한후 이미지 업로드 필요
+        idCardImage = "";
+    }
 
     public User toUser() {
-        return new User(platformType, platformId, name, email, profileImageUrl, idCardImageUrl,
-            gender, birth, Authority.USER);
+        decodeIdCardImage();
+        return new User(platformType, platformId, name, email, profileImageUrl, idCardImage,
+            Authority.USER);
     }
 }

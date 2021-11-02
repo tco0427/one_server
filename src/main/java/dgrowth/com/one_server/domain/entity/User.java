@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -64,10 +63,6 @@ public class User extends BaseEntity{
     private List<ParticipantGroup> participantGroups = new ArrayList<>();
 
 
-    public UserResponse toResponse(){
-        return new UserResponse(id, platformType, platformId, name, email, profileImageUrl, gender, birth);
-    }
-
     public User(PlatformType platformType, String platformId, String name, String email,
         String profileImageUrl, String idCardUrl, Gender gender, LocalDate birth,
         Authority authority) {
@@ -80,6 +75,23 @@ public class User extends BaseEntity{
         this.gender = gender;
         this.birth = birth;
         this.authority = authority;
+    }
+
+    public User(PlatformType platformType, String platformId, String name,
+        String email, String profileImageUrl, String idCardUrl,
+        Authority authority) {
+        this.platformType = platformType;
+        this.platformId = platformId;
+        this.name = name;
+        this.email = email;
+        this.profileImageUrl = profileImageUrl;
+        this.idCardUrl = idCardUrl;
+        this.authority = authority;
+    }
+
+    public UserResponse toResponse() {
+        return new UserResponse(id, platformType, platformId, name, email, profileImageUrl, gender,
+            birth);
     }
 
     public void setUserToken(UserToken userToken) {
