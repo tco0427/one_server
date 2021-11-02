@@ -1,10 +1,10 @@
 package dgrowth.com.one_server.service;
 
-import dgrowth.com.one_server.data.enumeration.PlatformType;
+import dgrowth.com.one_server.domain.enumeration.PlatformType;
 import dgrowth.com.one_server.domain.entity.User;
 import dgrowth.com.one_server.domain.entity.UserToken;
-import dgrowth.com.one_server.domain.repository.UserRepository;
-import dgrowth.com.one_server.domain.repository.UserTokenRepository;
+import dgrowth.com.one_server.repository.UserRepository;
+import dgrowth.com.one_server.repository.UserTokenRepository;
 import dgrowth.com.one_server.exception.InvalidUserException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

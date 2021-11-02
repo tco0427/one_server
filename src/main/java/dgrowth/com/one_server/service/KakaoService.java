@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dgrowth.com.one_server.data.dto.response.OAuthResponse;
-import dgrowth.com.one_server.data.enumeration.PlatformType;
+import dgrowth.com.one_server.domain.enumeration.PlatformType;
 import dgrowth.com.one_server.util.WebUtil;
 import java.io.BufferedReader;
 import java.io.IOException;

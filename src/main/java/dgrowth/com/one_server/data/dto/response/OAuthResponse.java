@@ -1,6 +1,6 @@
 package dgrowth.com.one_server.data.dto.response;
 
-import dgrowth.com.one_server.data.enumeration.PlatformType;
+import dgrowth.com.one_server.domain.enumeration.PlatformType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

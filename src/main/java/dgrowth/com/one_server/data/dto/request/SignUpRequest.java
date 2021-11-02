@@ -1,8 +1,11 @@
 package dgrowth.com.one_server.data.dto.request;
 
-import dgrowth.com.one_server.data.enumeration.Authority;
-import dgrowth.com.one_server.data.enumeration.PlatformType;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import dgrowth.com.one_server.domain.enumeration.Authority;
+import dgrowth.com.one_server.domain.enumeration.Gender;
+import dgrowth.com.one_server.domain.enumeration.PlatformType;
 import dgrowth.com.one_server.domain.entity.User;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Base64;
 import lombok.AllArgsConstructor;

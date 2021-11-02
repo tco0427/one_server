@@ -1,6 +1,6 @@
-package dgrowth.com.one_server.domain.repository;
+package dgrowth.com.one_server.repository;
 
-import dgrowth.com.one_server.data.enumeration.PlatformType;
+import dgrowth.com.one_server.domain.enumeration.PlatformType;
 import dgrowth.com.one_server.domain.entity.User;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

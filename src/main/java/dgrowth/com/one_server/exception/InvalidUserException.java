@@ -6,12 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Getter
-@ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = ResponseMessage.INVALID_USER)
-public class InvalidUserException extends RuntimeException {
+@ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = ResponseMessage.INVALID_USER) // main으로부터 생성됨
+public class InvalidUserException extends RuntimeException{
+    private final static String message = ResponseMessage.INVALID_USER;
 
-    String message = ResponseMessage.INVALID_USER;
+    HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
 
     public InvalidUserException() {
-        this.message = message;
+        super(message);
     }
 }

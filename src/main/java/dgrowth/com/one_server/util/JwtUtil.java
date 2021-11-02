@@ -1,8 +1,8 @@
 package dgrowth.com.one_server.util;
 
 import dgrowth.com.one_server.data.dto.response.TokenResponse;
-import dgrowth.com.one_server.data.enumeration.Authority;
-import dgrowth.com.one_server.data.enumeration.Token;
+import dgrowth.com.one_server.domain.enumeration.Authority;
+import dgrowth.com.one_server.domain.enumeration.Token;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

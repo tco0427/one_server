@@ -1,7 +1,7 @@
 package dgrowth.com.one_server.domain.entity;
 
 import dgrowth.com.one_server.data.dto.response.TokenResponse;
-import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,14 +10,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import static lombok.AccessLevel.PROTECTED;
+
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 @ToString
 public class UserToken extends BaseEntity{
     @Id
     @GeneratedValue
-    @Column(name = "id")
     private Long id;
 
     // 토큰

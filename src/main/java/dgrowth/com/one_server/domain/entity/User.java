@@ -1,35 +1,33 @@
 package dgrowth.com.one_server.domain.entity;
 
 import dgrowth.com.one_server.data.dto.response.UserResponse;
-import dgrowth.com.one_server.data.enumeration.Authority;
-import dgrowth.com.one_server.data.enumeration.Gender;
-import dgrowth.com.one_server.data.enumeration.PlatformType;
+import dgrowth.com.one_server.domain.enumeration.Authority;
+import dgrowth.com.one_server.domain.enumeration.Gender;
+import dgrowth.com.one_server.domain.enumeration.PlatformType;
 import java.time.LocalDate;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import static javax.persistence.EnumType.*;
+import static lombok.AccessLevel.PROTECTED;
+
 @Entity
 @Getter
-@NoArgsConstructor
-@ToString
-public class User extends BaseEntity {
-
+@NoArgsConstructor(access = PROTECTED)
+@ToString(of = {"id", "platformType", "platformId", "name",
+        "email", "profileImageUrl", "idCardUrl", "gender",
+        "birth", "authority"})
+public class User extends BaseEntity{
     @Id
     @GeneratedValue
-    @Column(name = "id")
     private Long id;
 
     // 가입 플랫폼 타입(카카오, 네이버)
-    @Enumerated(EnumType.STRING)
+    @Enumerated(STRING)
     private PlatformType platformType;
 
     // 플랫폼 고유 아이디
@@ -48,18 +46,21 @@ public class User extends BaseEntity {
     private String idCardUrl;
 
     // 성별
-    @Enumerated(EnumType.STRING)
+    @Enumerated(STRING)
     private Gender gender;
 
     // 생년월일(yymmdd)
     private LocalDate birth;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(STRING)
     private Authority authority;
 
     @OneToOne
     @JoinColumn(name = "user_token_id")
     private UserToken userToken;
+
+    @OneToMany(mappedBy = "user")
+    private List<ParticipantGroup> participantGroups = new ArrayList<>();
 
 
     public User(PlatformType platformType, String platformId, String name, String email,
