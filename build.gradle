@@ -1,6 +1,7 @@
 plugins {
     id 'org.springframework.boot' version '2.5.6'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
     id 'java'
 }
 
@@ -26,6 +27,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 
+    //querydsl
+    implementation 'com.querydsl:querydsl-jpa'
 
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
@@ -73,3 +76,26 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+//querydsl 빌드와 관련된 프로세싱
+//querydsl 폴더를 다음으로 설정 (build/generated/querydsl <- 소스폴더)
+//엔티티를 보고 querydsl이 엔티티를 만듬 (QHello)
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+    main.java.srcDir querydslDir
+}
+
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+

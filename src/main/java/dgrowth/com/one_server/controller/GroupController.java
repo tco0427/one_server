@@ -3,6 +3,7 @@ package dgrowth.com.one_server.controller;
 import dgrowth.com.one_server.data.dto.request.GroupRequest;
 import dgrowth.com.one_server.data.dto.response.DeleteGroupResponse;
 import dgrowth.com.one_server.data.dto.response.GroupResponse;
+import dgrowth.com.one_server.data.dto.response.HotGroupListResponse;
 import dgrowth.com.one_server.domain.enumeration.Category;
 import dgrowth.com.one_server.service.GroupService;
 import io.swagger.annotations.ApiOperation;
@@ -51,5 +52,10 @@ public class GroupController {
     @GetMapping("/info/{groupId}")
     public ResponseEntity<GroupResponse> info(HttpServletRequest httpServletRequest, @PathVariable("groupId") Long groupId) {
         return ResponseEntity.ok().body(groupService.groupInfoById(httpServletRequest, groupId));
+    }
+
+    @GetMapping("/hot")
+    public ResponseEntity<HotGroupListResponse> getRealtimeHot() {
+        return ResponseEntity.ok().body(groupService.findHotGroup());
     }
 }
