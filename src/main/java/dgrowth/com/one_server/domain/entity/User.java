@@ -96,7 +96,7 @@ public class User extends BaseEntity{
     }
 
     public UserResponse toResponse() {
-        return new UserResponse(id, platformType, platformId, name, email, profileImageUrl, gender,
+        return new UserResponse(id, platformType, platformId, name, email, majorId, profileImageUrl, gender,
             birth);
     }
 

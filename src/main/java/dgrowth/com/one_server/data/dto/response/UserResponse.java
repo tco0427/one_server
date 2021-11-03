@@ -27,6 +27,9 @@ public class UserResponse {
 
     // 이메일
     private String email;
+    
+    // 학과
+    private Long majorId;
 
     // 프로필 이미지
     private String profileImageUrl;
