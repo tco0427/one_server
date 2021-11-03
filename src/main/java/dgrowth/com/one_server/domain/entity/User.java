@@ -39,6 +39,9 @@ public class User extends BaseEntity{
     // 이메일
     private String email;
 
+    // 학과 이름
+    private Long majorId;
+
     // 프로필 이미지
     private String profileImageUrl;
 
@@ -62,6 +65,9 @@ public class User extends BaseEntity{
     @OneToMany(mappedBy = "user")
     private List<ParticipantGroup> participantGroups = new ArrayList<>();
 
+    public void setMajorId(Long majorId) {
+        this.majorId = majorId;
+    }
 
     public User(PlatformType platformType, String platformId, String name, String email,
         String profileImageUrl, String idCardUrl, Gender gender, LocalDate birth,
