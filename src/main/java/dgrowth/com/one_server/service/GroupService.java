@@ -1,20 +1,35 @@
 package dgrowth.com.one_server.service;
 
 
+import com.querydsl.core.Tuple;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import dgrowth.com.one_server.data.dto.mapper.GroupMapper;
 import dgrowth.com.one_server.data.dto.request.GroupRequest;
 import dgrowth.com.one_server.data.dto.response.DeleteGroupResponse;
 import dgrowth.com.one_server.data.dto.response.GroupResponse;
+import dgrowth.com.one_server.data.dto.response.HotGroupListResponse;
+import dgrowth.com.one_server.data.dto.response.HotGroupResponse;
 import dgrowth.com.one_server.domain.entity.Group;
+import dgrowth.com.one_server.domain.entity.ParticipantGroup;
 import dgrowth.com.one_server.domain.enumeration.Category;
 import dgrowth.com.one_server.repository.GroupRepository;
 import javax.servlet.http.HttpServletRequest;
+
+import dgrowth.com.one_server.repository.ParticipantGroupRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import static dgrowth.com.one_server.domain.entity.QParticipantGroup.participantGroup;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +38,8 @@ public class GroupService {
 
     private final GroupRepository groupRepository;
     private final AuthService authService;
+    private final ParticipantGroupRepository participantGroupRepository;
+    private final JPAQueryFactory queryFactory;
 
     public Group findById(Long id) {
         return groupRepository.findById(id)
@@ -109,5 +126,37 @@ public class GroupService {
 
     public List<Group> findByHostId(Long hostId) {
         return groupRepository.findByHostId(hostId);
+    }
+
+    public HotGroupListResponse findHotGroup() {
+        HotGroupListResponse hotGroupListResponse = null;
+
+        List<HotGroupResponse> list = new ArrayList<>();
+
+        Date startDatetime = java.sql.Timestamp.valueOf(LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.of(0,0,0))); //어제 00:00:00
+        Date endDatetime = java.sql.Timestamp.valueOf(LocalDateTime.of(LocalDate.now(), LocalTime.of(23,59,59))); //오늘 23:59:59
+
+        List<Tuple> fetch = queryFactory
+                .select(participantGroup.group, participantGroup.count())
+                .from(participantGroup)
+                .where(participantGroup.createdDate.after(startDatetime).and(participantGroup.createdDate.before(endDatetime)))
+                .groupBy(participantGroup.group)
+                .orderBy(participantGroup.count().desc())
+                .fetch();
+
+        for (Tuple tuple : fetch) {
+            Group group = tuple.get(participantGroup.group);
+            Long count = tuple.get(participantGroup.count());
+
+            HotGroupResponse hotGroupResponse = new HotGroupResponse(group, count);
+
+            if(list.size() <= 10) {
+                list.add(hotGroupResponse);
+            }
+        }
+
+        hotGroupListResponse = new HotGroupListResponse(list);
+
+        return hotGroupListResponse;
     }
 }

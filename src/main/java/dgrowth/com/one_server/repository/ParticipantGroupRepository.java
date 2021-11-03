@@ -1,6 +1,6 @@
 package dgrowth.com.one_server.repository;
 
-import dgrowth.com.one_server.domain.entity.Group;
+
 import dgrowth.com.one_server.domain.entity.ParticipantGroup;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;

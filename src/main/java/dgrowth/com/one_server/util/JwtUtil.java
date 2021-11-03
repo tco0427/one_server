@@ -35,7 +35,7 @@ public class JwtUtil implements Serializable {
     private String EMAIL_CLAIM;
 
     // 토큰 유효시간
-    public static final long JWT_TOKEN_EXPIRATION = 60; // 1분
+    public static final long JWT_TOKEN_EXPIRATION = 30 * 60; // 30분
     public static final long JWT_REFRESH_TOKEN_EXPIRATION = 30 * 24 * 60 * 60; // 30일
 
     /**
