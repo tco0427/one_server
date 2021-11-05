@@ -5,6 +5,7 @@ import dgrowth.com.one_server.domain.enumeration.Authority;
 import dgrowth.com.one_server.domain.enumeration.Gender;
 import dgrowth.com.one_server.domain.enumeration.PlatformType;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
@@ -49,11 +50,12 @@ public class User extends BaseEntity{
     private String idCardUrl;
 
     // 성별
+    @Column(columnDefinition = "varchar(20) default 'FEMALE'")
     @Enumerated(STRING)
-    private Gender gender;
+    private Gender gender = Gender.FEMALE;
 
     // 생년월일(yymmdd)
-    private LocalDate birth;
+    private LocalDate birth = LocalDate.of(2000, Month.FEBRUARY, 28);
 
     @Enumerated(STRING)
     private Authority authority;
