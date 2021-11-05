@@ -6,13 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Getter
-@ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = ResponseMessage.EXPIRED_TOKEN) // main으로부터 생성됨
-public class ExpiredTokenException extends RuntimeException{
+public class ExpiredTokenException extends BaseException{
     private static final String message = ResponseMessage.EXPIRED_TOKEN;
 
-    HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
+    private static final HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
 
     public ExpiredTokenException() {
-        super(message);
+        super(message, httpStatus);
     }
 }

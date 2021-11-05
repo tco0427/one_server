@@ -6,13 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Getter
-@ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = ResponseMessage.INVALID_TOKEN) // main으로부터 생성됨
-public class InvalidTokenException extends RuntimeException{
+public class InvalidTokenException extends BaseException{
     private final static String message = ResponseMessage.INVALID_TOKEN;
 
-    HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
+    private final static HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
 
     public InvalidTokenException() {
-        super(message);
+        super(message, httpStatus);
     }
 }

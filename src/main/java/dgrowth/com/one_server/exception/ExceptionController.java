@@ -1,6 +1,8 @@
 package dgrowth.com.one_server.exception;
 
+import dgrowth.com.one_server.data.dto.response.ErrorResponse;
 import java.nio.file.AccessDeniedException;
+import java.time.LocalTime;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +14,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionController {
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<Object> BadRequestException(final RuntimeException runtimeException) {
-        log.warn("error", runtimeException);
-        return ResponseEntity.badRequest().body(runtimeException.getMessage());
+    public ResponseEntity<ErrorResponse> BadRequestException(final BaseException e) {
+        log.warn("error", e);
+        return ResponseEntity.badRequest().body(
+            new ErrorResponse(LocalTime.now(), e.getMessage(), e.getHttpStatus().value(),
+                e.getHttpStatus().name()
+            ));
     }
 
     @ExceptionHandler({ AccessDeniedException.class })
