@@ -19,7 +19,9 @@ import dgrowth.com.one_server.repository.ParticipantGroupRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -40,6 +42,7 @@ public class GroupService {
     private final AuthService authService;
     private final ParticipantGroupRepository participantGroupRepository;
     private final JPAQueryFactory queryFactory;
+    private final S3Uploader s3Uploader;
 
     public Group findById(Long id) {
         return groupRepository.findById(id)
@@ -86,7 +89,8 @@ public class GroupService {
     }
 
     @Transactional
-    public GroupResponse save(GroupRequest groupRequest, HttpServletRequest httpServletRequest) {
+    public GroupResponse save(GroupRequest groupRequest, HttpServletRequest httpServletRequest,
+                              MultipartFile multipartFile) {
         GroupResponse groupResponse = null;
         // 1. 헤더에서 토큰 체크
         String token = authService.getTokenByHeader(httpServletRequest);
@@ -94,8 +98,17 @@ public class GroupService {
         // 2. 토큰 유효성 체크 및 유저 불러오기
         Long hostId = authService.getUserInfoByToken(token).getId();
 
+        String url = null;
+        try{
+            url = s3Uploader.upload(multipartFile, "static");
+        } catch(IOException e) {
+            return groupResponse;
+        }
+
         // 3. 그룹 생성 및 저장
+
         Group newGroup = GroupMapper.INSTANCE.requestToEntity(groupRequest, hostId);
+        newGroup.setGroupImageUrl(url);
         Group savedGroup = groupRepository.save(newGroup);
 
         // 4. Response 생성

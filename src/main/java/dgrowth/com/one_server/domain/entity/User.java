@@ -86,14 +86,13 @@ public class User extends BaseEntity{
     }
 
     public User(PlatformType platformType, String platformId, String name,
-        String email, String profileImageUrl, String idCardUrl,
+        String email, String profileImageUrl,
         Authority authority) {
         this.platformType = platformType;
         this.platformId = platformId;
         this.name = name;
         this.email = email;
         this.profileImageUrl = profileImageUrl;
-        this.idCardUrl = idCardUrl;
         this.authority = authority;
     }
 

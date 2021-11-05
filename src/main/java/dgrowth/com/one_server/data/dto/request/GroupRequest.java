@@ -1,6 +1,7 @@
 package dgrowth.com.one_server.data.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import dgrowth.com.one_server.domain.entity.Group;
 import dgrowth.com.one_server.domain.enumeration.Category;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -13,8 +14,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GroupRequest {
     private String title;   //그룹명
-
-    private String groupImageUrl;   //그룹사진
 
     private String description; //그룹설명
 

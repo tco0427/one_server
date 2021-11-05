@@ -63,7 +63,6 @@ dependencies {
 
     // server
     implementation 'mysql:mysql-connector-java'
-    implementation 'com.jlefebure:spring-boot-starter-minio:1.1'
     runtimeOnly 'mysql:mysql-connector-java'
 
     testImplementation 'io.projectreactor:reactor-test'
