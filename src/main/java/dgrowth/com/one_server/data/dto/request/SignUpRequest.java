@@ -29,21 +29,11 @@ public class SignUpRequest {
     // 이메일
     private String email;
 
-    // 프로필 이미지
-    private String profileImageUrl;
-
     // 학생증 이미지
     private String idCardImage;
 
-    public void decodeIdCardImage() {
-        idCardImage = Arrays.toString(Base64.getDecoder().decode(idCardImage));
-        // TODO 디코딩 한후 이미지 업로드 필요
-        idCardImage = "";
-    }
-
-    public User toUser() {
-        decodeIdCardImage();
-        return new User(platformType, platformId, name, email, profileImageUrl, idCardImage,
+    public User toUser(String profileUrl) {
+        return new User(platformType, platformId, name, email, profileUrl,
             Authority.USER);
     }
 }

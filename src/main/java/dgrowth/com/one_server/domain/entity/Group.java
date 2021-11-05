@@ -3,11 +3,8 @@ package dgrowth.com.one_server.domain.entity;
 import dgrowth.com.one_server.domain.enumeration.Category;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -35,6 +32,7 @@ public class Group extends BaseEntity{
 
     private String title;   //그룹명
 
+    @Setter
     private String groupImageUrl;   //그룹사진
 
     private String description; //그룹설명
@@ -51,8 +49,14 @@ public class Group extends BaseEntity{
     @Enumerated(STRING)
     private Category category;  // 카테고리
 
+    @OneToMany(mappedBy = "group")
+    private List<ParticipantGroup> participantGroups = new ArrayList<>();
+
+    @OneToMany(mappedBy = "group")
+    private List<Notice> notices = new ArrayList<>();
+
     public Group(String title, String groupImageUrl, String description,
-        String joinCondition, String place, DayOfWeek dayOfWeek, LocalTime time, Category category) {
+                 String joinCondition, String place, DayOfWeek dayOfWeek, LocalTime time, Category category) {
         this.title = title;
         this.groupImageUrl = groupImageUrl;
         this.description = description;
@@ -62,10 +66,4 @@ public class Group extends BaseEntity{
         this.time = time;
         this.category = category;
     }
-
-    @OneToMany(mappedBy = "group")
-    private List<ParticipantGroup> participantGroups = new ArrayList<>();
-
-    @OneToMany(mappedBy = "group")
-    private List<Notice> notices = new ArrayList<>();
 }

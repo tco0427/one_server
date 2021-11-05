@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Slf4j
@@ -32,6 +33,7 @@ public class AuthService {
     private final KakaoService kakaoService;
     private final UserService userService;
     private final JwtUtil jwtUtil;
+    private final S3Uploader s3Uploader;
 
     /**
      * 회원 가입
@@ -41,7 +43,7 @@ public class AuthService {
      * @throws DuplicatedUserException
      */
     @Transactional
-    public SignUpResponse signUp(SignUpRequest request) throws DuplicatedUserException {
+    public SignUpResponse signUp(SignUpRequest request, MultipartFile multipartFile) throws DuplicatedUserException {
         // 1. 플랫폼 타입(카카오, 네이버)와 고유 아이디로 회원 여부 조회
         if (userService.isSavedUser(request.getPlatformType(), request.getPlatformId())) {
             throw new DuplicatedUserException();
@@ -49,8 +51,11 @@ public class AuthService {
 
         SignUpResponse signUpResponse;
         try {
+
+            String url = s3Uploader.upload(multipartFile, "static");
+
             // 2. 회원 정보 저장
-            User user = request.toUser();
+            User user = request.toUser(url);
             User savedUser = userService.save(user);
 
             // 3. 토큰 발급 및 정보 저장

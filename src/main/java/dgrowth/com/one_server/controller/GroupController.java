@@ -9,13 +9,8 @@ import dgrowth.com.one_server.service.GroupService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -35,8 +30,8 @@ public class GroupController {
 
     @PostMapping("/create")
     public ResponseEntity<GroupResponse> create(@RequestBody GroupRequest groupRequest,
-        HttpServletRequest httpServletRequest) {
-        return ResponseEntity.ok().body(groupService.save(groupRequest, httpServletRequest));
+                                                HttpServletRequest httpServletRequest, @RequestParam("groupImage")MultipartFile multipartFile) {
+        return ResponseEntity.ok().body(groupService.save(groupRequest, httpServletRequest, multipartFile));
     }
 
     @GetMapping("/all")
