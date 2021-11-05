@@ -45,3 +45,15 @@ kakao: #카카오 설정
   redirect-url: http://api-werone.itkoo.kr/auth/kakao
   token-api: https://kauth.kakao.com/oauth/token
   user-api: https://kapi.kakao.com/v2/user/me
+
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIA2ZNH7W5Z3P4FZ65O
+      secretKey: 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
+    s3:
+      bucket: weareone-bucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

@@ -69,8 +69,7 @@ dependencies {
     testImplementation 'io.projectreactor:reactor-test'
     implementation 'com.google.code.gson:gson:2.7'
 
-    // 향후에 사용할거니까 우선 주석처리
-    // implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
 test {
