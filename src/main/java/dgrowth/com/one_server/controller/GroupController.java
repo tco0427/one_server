@@ -29,9 +29,9 @@ public class GroupController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<GroupResponse> create(@RequestBody GroupRequest groupRequest,
-                                                HttpServletRequest httpServletRequest, @RequestParam("groupImage")MultipartFile multipartFile) {
-        return ResponseEntity.ok().body(groupService.save(groupRequest, httpServletRequest, multipartFile));
+    public ResponseEntity<GroupResponse> create(@ModelAttribute GroupRequest groupRequest,
+                                                HttpServletRequest httpServletRequest) {
+        return ResponseEntity.ok().body(groupService.save(groupRequest, httpServletRequest));
     }
 
     @GetMapping("/all")

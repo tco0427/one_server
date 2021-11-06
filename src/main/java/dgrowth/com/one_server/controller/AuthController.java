@@ -37,8 +37,8 @@ public class AuthController {
      * @return Response<SignUpResponse>
      */
     @PostMapping("/signup")
-    public ResponseEntity<SignUpResponse> signUp(@RequestBody SignUpRequest signUpRequest, @RequestParam("profileImage")MultipartFile multipartFile) {
-        return ResponseEntity.ok(authService.signUp(signUpRequest, multipartFile));
+    public ResponseEntity<SignUpResponse> signUp(@ModelAttribute SignUpRequest signUpRequest) {
+        return ResponseEntity.ok(authService.signUp(signUpRequest));
     }
 
     @PostMapping("/token")

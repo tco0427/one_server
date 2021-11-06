@@ -11,6 +11,7 @@ import java.util.Base64;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Slf4j
@@ -22,6 +23,8 @@ public class SignUpRequest {
 
     // 플랫폼 고유 아이디
     private String platformId;
+
+    private MultipartFile profileImage;
 
     // 이름
     private String name;
