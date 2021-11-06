@@ -1,5 +1,6 @@
 package dgrowth.com.one_server.data.dto.response;
 
+import dgrowth.com.one_server.domain.entity.Major;
 import dgrowth.com.one_server.domain.enumeration.Gender;
 import dgrowth.com.one_server.domain.enumeration.PlatformType;
 
@@ -29,7 +30,7 @@ public class UserResponse {
     private String email;
     
     // 학과
-    private Long majorId;
+    private Major major;
 
     // 프로필 이미지
     private String profileImageUrl;

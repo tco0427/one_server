@@ -11,9 +11,11 @@ import java.util.List;
 import javax.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import static javax.persistence.EnumType.*;
+import static javax.persistence.FetchType.*;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -40,8 +42,12 @@ public class User extends BaseEntity{
     // 이메일
     private String email;
 
-    // 학과 이름
-    private Long majorId;
+    @Setter
+    @ManyToOne(fetch = LAZY)
+    private Major major;
+
+    // 학번
+    private Long studentId;
 
     // 프로필 이미지
     private String profileImageUrl;
@@ -66,10 +72,6 @@ public class User extends BaseEntity{
 
     @OneToMany(mappedBy = "user")
     private List<ParticipantGroup> participantGroups = new ArrayList<>();
-
-    public void setMajorId(Long majorId) {
-        this.majorId = majorId;
-    }
 
     public User(PlatformType platformType, String platformId, String name, String email,
         String profileImageUrl, String idCardUrl, Gender gender, LocalDate birth,
@@ -97,7 +99,7 @@ public class User extends BaseEntity{
     }
 
     public UserResponse toResponse() {
-        return new UserResponse(id, platformType, platformId, name, email, majorId, profileImageUrl, gender,
+        return new UserResponse(id, platformType, platformId, name, email, major, profileImageUrl, gender,
             birth);
     }
 

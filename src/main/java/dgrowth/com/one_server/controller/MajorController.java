@@ -2,6 +2,7 @@ package dgrowth.com.one_server.controller;
 
 import dgrowth.com.one_server.data.dto.request.MajorRequest;
 import dgrowth.com.one_server.data.dto.response.MajorResponse;
+import dgrowth.com.one_server.data.dto.response.UserMajorResponse;
 import dgrowth.com.one_server.data.dto.response.UserResponse;
 import dgrowth.com.one_server.service.MajorService;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,5 +44,11 @@ public class MajorController {
     public ResponseEntity<UserResponse> addMajor(HttpServletRequest httpServletRequest,
         @PathVariable("majorId") Long majorId) {
         return ResponseEntity.ok().body(majorService.userAddMajor(httpServletRequest, majorId));
+    }
+
+    @GetMapping("/{majorId]/{studentId}")
+    public ResponseEntity<List<UserMajorResponse>> getinfoByStudnetId(HttpServletRequest httpServletRequest,
+                                                                      @PathVariable("studentId") Long studentId) {
+        return ResponseEntity.ok().body(majorService.findByStudentId(httpServletRequest, studentId));
     }
 }
