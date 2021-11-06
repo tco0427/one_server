@@ -89,8 +89,7 @@ public class GroupService {
     }
 
     @Transactional
-    public GroupResponse save(GroupRequest groupRequest, HttpServletRequest httpServletRequest,
-                              MultipartFile multipartFile) {
+    public GroupResponse save(GroupRequest groupRequest, HttpServletRequest httpServletRequest) {
         GroupResponse groupResponse = null;
         // 1. 헤더에서 토큰 체크
         String token = authService.getTokenByHeader(httpServletRequest);
@@ -100,9 +99,9 @@ public class GroupService {
 
         String url = null;
         try{
-            url = s3Uploader.upload(multipartFile, "static");
+            url = s3Uploader.upload(groupRequest.getGroupImage(), "static");
         } catch(IOException e) {
-            return groupResponse;
+            e.getMessage();
         }
 
         // 3. 그룹 생성 및 저장

@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @AllArgsConstructor
@@ -20,6 +21,8 @@ public class GroupRequest {
     private String joinCondition;   //가입조건
 
     private String place;   //장소
+
+    private MultipartFile groupImage;
 
     private DayOfWeek dayOfWeek;     //요일
 

@@ -43,17 +43,18 @@ public class AuthService {
      * @throws DuplicatedUserException
      */
     @Transactional
-    public SignUpResponse signUp(SignUpRequest request, MultipartFile multipartFile) throws DuplicatedUserException {
+    public SignUpResponse signUp(SignUpRequest request) throws DuplicatedUserException {
         // 1. 플랫폼 타입(카카오, 네이버)와 고유 아이디로 회원 여부 조회
         if (userService.isSavedUser(request.getPlatformType(), request.getPlatformId())) {
             throw new DuplicatedUserException();
         }
 
-        SignUpResponse signUpResponse;
+        SignUpResponse signUpResponse = null;
         try {
-
-            String url = s3Uploader.upload(multipartFile, "static");
-
+            String url = null;
+            if(request.getProfileImage() != null){
+                url = s3Uploader.upload(request.getProfileImage(), "static");
+            }
             // 2. 회원 정보 저장
             User user = request.toUser(url);
             User savedUser = userService.save(user);
@@ -67,8 +68,8 @@ public class AuthService {
             savedUser = userService.save(user);
 
             signUpResponse = new SignUpResponse(savedUser.toResponse(), tokenResponse);
-        } catch (Exception exception) {
-            throw new CoreException(ResponseMessage.FAILED_TO_SIGN_UP);
+        } catch (IOException exception) {
+            exception.getMessage();
         }
 
         return signUpResponse;
