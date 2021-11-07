@@ -1,6 +1,7 @@
 package dgrowth.com.one_server.controller;
 
 import dgrowth.com.one_server.data.dto.request.GroupRequest;
+import dgrowth.com.one_server.data.dto.response.CategoryResponse;
 import dgrowth.com.one_server.data.dto.response.DeleteGroupResponse;
 import dgrowth.com.one_server.data.dto.response.GroupResponse;
 import dgrowth.com.one_server.data.dto.response.HotGroupListResponse;
@@ -24,13 +25,14 @@ public class GroupController {
 
     @ApiOperation(value = "", notes = "내가 만든 그룹 삭제")
     @DeleteMapping("/delete/{groupId}")
-    public ResponseEntity<DeleteGroupResponse> deleteGroupByUser(HttpServletRequest request, @PathVariable("groupId") Long groupId) {
+    public ResponseEntity<DeleteGroupResponse> deleteGroupByUser(HttpServletRequest request,
+        @PathVariable("groupId") Long groupId) {
         return ResponseEntity.ok().body(groupService.deleteById(request, groupId));
     }
 
     @PostMapping("/create")
     public ResponseEntity<GroupResponse> create(@ModelAttribute GroupRequest groupRequest,
-                                                HttpServletRequest httpServletRequest) {
+        HttpServletRequest httpServletRequest) {
         return ResponseEntity.ok().body(groupService.save(groupRequest, httpServletRequest));
     }
 
@@ -40,17 +42,24 @@ public class GroupController {
     }
 
     @GetMapping("/all/{category}")
-    public ResponseEntity<List<GroupResponse>> allByCategory(@PathVariable("category") Category category, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<List<GroupResponse>> allByCategory(
+        @PathVariable("category") Category category, HttpServletRequest httpServletRequest) {
         return ResponseEntity.ok().body(groupService.findAll(category, httpServletRequest));
     }
 
     @GetMapping("/info/{groupId}")
-    public ResponseEntity<GroupResponse> info(HttpServletRequest httpServletRequest, @PathVariable("groupId") Long groupId) {
+    public ResponseEntity<GroupResponse> info(HttpServletRequest httpServletRequest,
+        @PathVariable("groupId") Long groupId) {
         return ResponseEntity.ok().body(groupService.groupInfoById(httpServletRequest, groupId));
     }
 
     @GetMapping("/hot")
     public ResponseEntity<HotGroupListResponse> getRealtimeHot() {
         return ResponseEntity.ok().body(groupService.findHotGroup());
+    }
+
+    @GetMapping("/categories")
+    public ResponseEntity<List<CategoryResponse>> categories() {
+        return ResponseEntity.ok().body(groupService.categories());
     }
 }

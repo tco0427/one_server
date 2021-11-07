@@ -3,8 +3,10 @@ package dgrowth.com.one_server.service;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import dgrowth.com.one_server.data.dto.mapper.CategoryMapper;
 import dgrowth.com.one_server.data.dto.mapper.GroupMapper;
 import dgrowth.com.one_server.data.dto.request.GroupRequest;
+import dgrowth.com.one_server.data.dto.response.CategoryResponse;
 import dgrowth.com.one_server.data.dto.response.DeleteGroupResponse;
 import dgrowth.com.one_server.data.dto.response.GroupResponse;
 import dgrowth.com.one_server.data.dto.response.HotGroupListResponse;
@@ -170,5 +172,11 @@ public class GroupService {
         hotGroupListResponse = new HotGroupListResponse(list);
 
         return hotGroupListResponse;
+    }
+
+    public List<CategoryResponse> categories() {
+        List<CategoryResponse> categoryResponses = CategoryMapper.toDto();
+
+        return categoryResponses;
     }
 }
