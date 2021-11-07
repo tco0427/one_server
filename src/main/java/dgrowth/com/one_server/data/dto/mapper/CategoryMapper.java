@@ -18,7 +18,7 @@ public class CategoryMapper {
 
         for (String e : categoryMap.keySet()) {
             ColorMap colorMap = categoryMap.get(e);
-            CategoryResponse response = CategoryResponse.builder().category(e).hexColor(colorMap.color)
+            CategoryResponse response = CategoryResponse.builder().category(e).color(colorMap.color)
                 .opacity(colorMap.opacity).build();
 
             categoryResponses.add(response);

@@ -13,7 +13,7 @@ public class CategoryResponse {
 
     private String category;
 
-    private String hexColor;
+    private String color;
 
     private Float opacity;
 }
