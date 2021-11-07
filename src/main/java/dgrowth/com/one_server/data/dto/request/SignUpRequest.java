@@ -24,7 +24,7 @@ public class SignUpRequest {
     // 플랫폼 고유 아이디
     private String platformId;
 
-    private MultipartFile profileImage;
+    private String profileUrl;
 
     // 이름
     private String name;
@@ -33,10 +33,10 @@ public class SignUpRequest {
     private String email;
 
     // 학생증 이미지
-    private String idCardImage;
+    private MultipartFile idCardImage;
 
-    public User toUser(String profileUrl) {
-        return new User(platformType, platformId, name, email, profileUrl,
+    public User toUser(String idCardImageUrl) {
+        return new User(platformType, platformId, name, email, profileUrl, idCardImageUrl,
             Authority.USER);
     }
 }

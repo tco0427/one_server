@@ -1,8 +1,5 @@
 package dgrowth.com.one_server.domain.entity;
 
-import dgrowth.com.one_server.domain.enumeration.Category;
-import java.time.DayOfWeek;
-import java.time.LocalTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,9 +10,7 @@ import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.*;
 
 @Entity
@@ -41,4 +36,7 @@ public class Major extends BaseEntity{
     private String association; // 학생회
 
     private String president; // 학생회장
+
+    @OneToMany(mappedBy = "major")
+    private List<User> users = new ArrayList<>();
 }

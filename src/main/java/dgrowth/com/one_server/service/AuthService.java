@@ -51,12 +51,12 @@ public class AuthService {
 
         SignUpResponse signUpResponse = null;
         try {
-            String url = null;
-            if(request.getProfileImage() != null){
-                url = s3Uploader.upload(request.getProfileImage(), "static");
+            String idCarImageUrl = null;
+            if(request.getIdCardImage() != null ) {
+                idCarImageUrl = s3Uploader.upload(request.getIdCardImage(), "static");
             }
             // 2. 회원 정보 저장
-            User user = request.toUser(url);
+            User user = request.toUser(idCarImageUrl);
             User savedUser = userService.save(user);
 
             // 3. 토큰 발급 및 정보 저장
