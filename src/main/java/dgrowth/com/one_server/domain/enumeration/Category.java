@@ -1,5 +1,7 @@
 package dgrowth.com.one_server.domain.enumeration;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
