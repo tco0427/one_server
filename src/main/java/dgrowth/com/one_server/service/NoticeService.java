@@ -94,7 +94,7 @@ public class NoticeService {
 
         Group group = groupService.findById(groupResponse.getId());
 
-        Sort sort = Sort.by(Sort.Direction.DESC, "created_date");
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdDate");
 
         Notice notice = noticeRepository.findByGroup(group, sort).get(0);
 
