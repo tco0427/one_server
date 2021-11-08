@@ -34,12 +34,22 @@ public class NoticeService {
      */
     @Transactional
     public CreateNoticeGroupResponse saveGroupNotice(HttpServletRequest httpServletRequest, CreateNoticeGroupRequest request) {
+        CreateNoticeGroupResponse createNoticeGroupResponse = null;
+
+        String token = authService.getTokenByHeader(httpServletRequest);
+
+        Long userId = authService.getUserInfoByToken(token).getId();
+
         Group group = groupService.findById(request.getGroupId());
-        Notice notice = new Notice(request.getTitle(), request.getContent(), group);
 
-        Notice savedNotice = noticeRepository.save(notice);
+        if(group.getHostId() == userId) {
 
-        CreateNoticeGroupResponse createNoticeGroupResponse = new CreateNoticeGroupResponse(savedNotice.getId(), group.getId(), savedNotice.getTitle(), savedNotice.getContent());
+            Notice notice = new Notice(request.getTitle(), request.getContent(), group);
+
+            Notice savedNotice = noticeRepository.save(notice);
+
+            createNoticeGroupResponse = new CreateNoticeGroupResponse(savedNotice.getId(), group.getId(), savedNotice.getTitle(), savedNotice.getContent());
+        }
 
         return createNoticeGroupResponse;
     }
@@ -49,13 +59,21 @@ public class NoticeService {
      */
     @Transactional
     public CreateNoticeMajorResponse saveMajorNotice(HttpServletRequest httpServletRequest, CreateNoticeMajorRequest request) {
+        CreateNoticeMajorResponse createNoticeMajorResponse = null;
+
+        String token = authService.getTokenByHeader(httpServletRequest);
+
+        Long userId = authService.getUserInfoByToken(token).getId();
+
         Major major = majorService.findById(request.getMajorId());
 
-        Notice notice = new Notice(request.getTitle(), request.getContent(), major);
+        if(major.getHostId() == userId) {
+            Notice notice = new Notice(request.getTitle(), request.getContent(), major);
 
-        Notice savedNotice = noticeRepository.save(notice);
+            Notice savedNotice = noticeRepository.save(notice);
 
-        CreateNoticeMajorResponse createNoticeMajorResponse = new CreateNoticeMajorResponse(savedNotice.getId(), major.getId(), savedNotice.getTitle(), savedNotice.getContent());
+            createNoticeMajorResponse = new CreateNoticeMajorResponse(savedNotice.getId(), major.getId(), savedNotice.getTitle(), savedNotice.getContent());
+        }
 
         return createNoticeMajorResponse;
     }
@@ -103,16 +121,33 @@ public class NoticeService {
      * 공지 수정
      */
     @Transactional
-    public NoticeResponse updateNoticeByUser(NoticeUpdateRequest noticeUpdateRequest, Long id) {
+    public NoticeResponse updateNoticeByUser(HttpServletRequest httpServletRequest, NoticeUpdateRequest noticeUpdateRequest, Long id) {
+        NoticeResponse noticeResponse = null;
+
+        String token = authService.getTokenByHeader(httpServletRequest);
+
+        Long userId = authService.getUserInfoByToken(token).getId();
+
         Notice notice = noticeRepository.findById(id)
                 .orElseThrow(NoSuchElementException::new);
 
         String title = noticeUpdateRequest.getTitle();
         String content = noticeUpdateRequest.getContent();
 
-        notice.update(title, content);
-
-        NoticeResponse noticeResponse = new NoticeResponse(notice.getId(), notice.getTitle(), notice.getContent());
+        if(notice.getMajor() != null) {
+            Long hostId = notice.getMajor().getHostId();
+            if(hostId == userId) {
+                notice.update(title, content);
+                noticeResponse = new NoticeResponse(notice.getId(), notice.getTitle(), notice.getContent());
+            }
+        }
+        if(notice.getGroup() != null) {
+            Long hostId = notice.getGroup().getHostId();
+            if(hostId == userId ) {
+                notice.update(title, content);
+                noticeResponse = new NoticeResponse(notice.getId(), notice.getTitle(), notice.getContent());
+            }
+        }
 
         return noticeResponse;
     }
@@ -121,9 +156,34 @@ public class NoticeService {
      * 공지 삭제
      */
     @Transactional
-    public NoticeDeleteResponse deleteNoticeById(Long id) {
-        noticeRepository.deleteById(id);
+    public NoticeDeleteResponse deleteNoticeById(HttpServletRequest httpServletRequest, Long id) {
+        NoticeDeleteResponse noticeDeleteResponse = null;
 
-        return new NoticeDeleteResponse(id);
+        String token = authService.getTokenByHeader(httpServletRequest);
+
+        Long userId = authService.getUserInfoByToken(token).getId();
+
+        User user = userService.findById(userId);
+
+        Notice notice = noticeRepository.findById(id)
+                .orElseThrow(NoSuchElementException::new);
+
+
+        if(notice.getMajor() != null) {
+            Long hostId = notice.getMajor().getHostId();
+            if(hostId == userId) {
+                noticeRepository.deleteById(id);
+                noticeDeleteResponse = new NoticeDeleteResponse(id);
+            }
+        }
+        if(notice.getGroup() != null) {
+            Long hostId = notice.getGroup().getHostId();
+            if(hostId == userId ) {
+                noticeRepository.deleteById(id);
+                noticeDeleteResponse = new NoticeDeleteResponse(id);
+            }
+        }
+
+        return noticeDeleteResponse;
     }
 }
