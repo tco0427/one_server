@@ -55,7 +55,7 @@ public class ParticipantGroupService {
             UserResponse userResponse = user.toResponse();
 
             MyGroupParticipantResponse myGroupParticipantResponse = new MyGroupParticipantResponse(
-                groupResponse, userResponse);
+                groupResponse);
 
             myGroupParticipantResponseList.add(myGroupParticipantResponse);
         }

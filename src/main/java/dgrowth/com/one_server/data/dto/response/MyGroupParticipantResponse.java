@@ -7,5 +7,4 @@ import lombok.Data;
 @AllArgsConstructor
 public class MyGroupParticipantResponse {
     private GroupResponse groupResponse;
-    private UserResponse userResponse;
 }
