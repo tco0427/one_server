@@ -37,7 +37,7 @@ public class Major extends BaseEntity{
 
     private String president; // 학생회장
 
-    private String profileUrl;
+    private String profileUrl = null; //모든 학과 이미지에 대하여 DKU로고 사용
 
     @OneToMany(mappedBy = "major")
     private List<User> users = new ArrayList<>();
