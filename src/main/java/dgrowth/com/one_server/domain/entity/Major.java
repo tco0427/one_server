@@ -37,6 +37,11 @@ public class Major extends BaseEntity{
 
     private String president; // 학생회장
 
+    private String profileUrl;
+
     @OneToMany(mappedBy = "major")
     private List<User> users = new ArrayList<>();
+
+    @OneToMany(mappedBy = "major")
+    private List<Notice> notices = new ArrayList<>();
 }

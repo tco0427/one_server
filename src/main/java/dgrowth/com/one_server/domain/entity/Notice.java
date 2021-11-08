@@ -10,7 +10,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
-@ToString(of = {"id"})
+@ToString(of = {"id", "title", "content"})
 public class Notice extends BaseEntity{
 
     @Id
@@ -23,4 +23,7 @@ public class Notice extends BaseEntity{
 
     @ManyToOne(fetch = LAZY)
     private Group group;
+
+    @ManyToOne(fetch = LAZY)
+    private Major major;
 }
