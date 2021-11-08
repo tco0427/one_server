@@ -25,6 +25,8 @@ public class Major extends BaseEntity{
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    private Long hostId;
+
     private String name; // 학과명
 
     private String location; // 위치
@@ -37,6 +39,11 @@ public class Major extends BaseEntity{
 
     private String president; // 학생회장
 
+    private String profileUrl = null; //모든 학과 이미지에 대하여 DKU로고 사용
+
     @OneToMany(mappedBy = "major")
     private List<User> users = new ArrayList<>();
+
+    @OneToMany(mappedBy = "major")
+    private List<Notice> notices = new ArrayList<>();
 }
