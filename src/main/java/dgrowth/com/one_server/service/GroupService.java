@@ -13,6 +13,7 @@ import dgrowth.com.one_server.data.dto.response.HotGroupListResponse;
 import dgrowth.com.one_server.data.dto.response.HotGroupResponse;
 import dgrowth.com.one_server.domain.entity.Group;
 import dgrowth.com.one_server.domain.entity.ParticipantGroup;
+import dgrowth.com.one_server.domain.entity.User;
 import dgrowth.com.one_server.domain.enumeration.Category;
 import dgrowth.com.one_server.repository.GroupRepository;
 import javax.servlet.http.HttpServletRequest;
@@ -45,6 +46,7 @@ public class GroupService {
     private final ParticipantGroupRepository participantGroupRepository;
     private final JPAQueryFactory queryFactory;
     private final S3Uploader s3Uploader;
+    private final UserService userService;
 
     public Group findById(Long id) {
         return groupRepository.findById(id)
@@ -99,6 +101,8 @@ public class GroupService {
         // 2. 토큰 유효성 체크 및 유저 불러오기
         Long hostId = authService.getUserInfoByToken(token).getId();
 
+        User user = userService.findById(hostId);
+
         String url = null;
         try{
             url = s3Uploader.upload(groupRequest.getGroupImage(), "static");
@@ -111,6 +115,10 @@ public class GroupService {
         Group newGroup = GroupMapper.INSTANCE.requestToEntity(groupRequest, hostId);
         newGroup.setGroupImageUrl(url);
         Group savedGroup = groupRepository.save(newGroup);
+
+        ParticipantGroup participantGroup = new ParticipantGroup(user, savedGroup);
+
+        participantGroupRepository.save(participantGroup);
 
         // 4. Response 생성
         groupResponse = GroupMapper.INSTANCE.toDto(savedGroup);
