@@ -42,9 +42,13 @@ public class NoticeService {
 
         Group group = groupService.findById(request.getGroupId());
 
+        System.out.println(group.getId());
+
         if(group.getHostId() == userId) {
 
             Notice notice = new Notice(request.getTitle(), request.getContent(), group);
+
+            //실행?
 
             Notice savedNotice = noticeRepository.save(notice);
 

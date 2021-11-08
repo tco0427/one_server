@@ -105,23 +105,25 @@ public class GroupService {
 
         String url = null;
         try{
-            url = s3Uploader.upload(groupRequest.getGroupImage(), "static");
+            if(groupRequest.getGroupImage() != null ) {
+                url = s3Uploader.upload(groupRequest.getGroupImage(), "static");
+            }
+            // 3. 그룹 생성 및 저장
+
+            Group newGroup = GroupMapper.INSTANCE.requestToEntity(groupRequest, hostId);
+            newGroup.setGroupImageUrl(url);
+            Group savedGroup = groupRepository.save(newGroup);
+
+            ParticipantGroup participantGroup = new ParticipantGroup(user, savedGroup);
+
+            participantGroupRepository.save(participantGroup);
+
+            // 4. Response 생성
+            groupResponse = GroupMapper.INSTANCE.toDto(savedGroup);
+
         } catch(IOException e) {
             e.getMessage();
         }
-
-        // 3. 그룹 생성 및 저장
-
-        Group newGroup = GroupMapper.INSTANCE.requestToEntity(groupRequest, hostId);
-        newGroup.setGroupImageUrl(url);
-        Group savedGroup = groupRepository.save(newGroup);
-
-        ParticipantGroup participantGroup = new ParticipantGroup(user, savedGroup);
-
-        participantGroupRepository.save(participantGroup);
-
-        // 4. Response 생성
-        groupResponse = GroupMapper.INSTANCE.toDto(savedGroup);
 
         return groupResponse;
     }

@@ -28,7 +28,7 @@ public class NoticeController {
         return ResponseEntity.ok().body(noticeService.deleteNoticeById(request, noticeId));
     }
 
-    @PostMapping("/gruop/create")
+    @PostMapping("/group/create")
     public ResponseEntity<CreateNoticeGroupResponse> createWithGroup(HttpServletRequest httpServletRequest, CreateNoticeGroupRequest request) {
         return ResponseEntity.ok().body(noticeService.saveGroupNotice(httpServletRequest, request));
     }
