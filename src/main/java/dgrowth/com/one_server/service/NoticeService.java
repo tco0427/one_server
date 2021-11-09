@@ -5,6 +5,7 @@ import dgrowth.com.one_server.data.dto.request.CreateNoticeMajorRequest;
 import dgrowth.com.one_server.data.dto.request.NoticeUpdateRequest;
 import dgrowth.com.one_server.data.dto.response.*;
 import dgrowth.com.one_server.domain.entity.*;
+import dgrowth.com.one_server.domain.enumeration.Authority;
 import dgrowth.com.one_server.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -69,9 +70,11 @@ public class NoticeService {
 
         Long userId = authService.getUserInfoByToken(token).getId();
 
+        User user = userService.findById(userId);
+
         Major major = majorService.findById(request.getMajorId());
 
-        if(major.getHostId() == userId) {
+        if(user.getAuthority() == Authority.ASSOCIATION) {
             Notice notice = new Notice(request.getTitle(), request.getContent(), major);
 
             Notice savedNotice = noticeRepository.save(notice);
@@ -132,6 +135,8 @@ public class NoticeService {
 
         Long userId = authService.getUserInfoByToken(token).getId();
 
+        User user = userService.findById(userId);
+
         Notice notice = noticeRepository.findById(id)
                 .orElseThrow(NoSuchElementException::new);
 
@@ -139,8 +144,7 @@ public class NoticeService {
         String content = noticeUpdateRequest.getContent();
 
         if(notice.getMajor() != null) {
-            Long hostId = notice.getMajor().getHostId();
-            if(hostId == userId) {
+            if(user.getAuthority() == Authority.ASSOCIATION) {
                 notice.update(title, content);
                 noticeResponse = new NoticeResponse(notice.getId(), notice.getTitle(), notice.getContent());
             }
@@ -174,8 +178,7 @@ public class NoticeService {
 
 
         if(notice.getMajor() != null) {
-            Long hostId = notice.getMajor().getHostId();
-            if(hostId == userId) {
+            if(user.getAuthority() == Authority.ASSOCIATION) {
                 noticeRepository.deleteById(id);
                 noticeDeleteResponse = new NoticeDeleteResponse(id);
             }
