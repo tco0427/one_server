@@ -121,7 +121,15 @@ public class User extends BaseEntity {
     }
 
     public UserResponse toResponse() {
-        return new UserResponse(id, platformType, platformId, name, email, major.getId(), profileImageUrl, gender,
+
+        Long majorId;
+
+        if (major == null) {
+            majorId = null;
+        } else {
+            majorId = major.getId();
+        }
+        return new UserResponse(id, platformType, platformId, name, email, majorId, profileImageUrl, gender,
             birth);
     }
 
