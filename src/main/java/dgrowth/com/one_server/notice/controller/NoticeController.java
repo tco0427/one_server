@@ -30,12 +30,12 @@ public class NoticeController {
     }
 
     @PostMapping("/group/create")
-    public ResponseEntity<CreateNoticeGroupResponse> createWithGroup(HttpServletRequest httpServletRequest, CreateNoticeGroupRequest request) {
+    public ResponseEntity<CreateNoticeGroupResponse> createWithGroup(HttpServletRequest httpServletRequest, @RequestBody CreateNoticeGroupRequest request) {
         return ResponseEntity.ok().body(noticeService.saveGroupNotice(httpServletRequest, request));
     }
 
     @PostMapping("/major/create")
-    public ResponseEntity<CreateNoticeMajorResponse> createWithMajor(HttpServletRequest httpServletRequest, CreateNoticeMajorRequest request) {
+    public ResponseEntity<CreateNoticeMajorResponse> createWithMajor(HttpServletRequest httpServletRequest, @RequestBody CreateNoticeMajorRequest request) {
         return ResponseEntity.ok().body(noticeService.saveMajorNotice(httpServletRequest, request));
     }
 
