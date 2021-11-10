@@ -96,33 +96,33 @@ public class MajorService {
         return majorResponse;
     }
 
-    // User에 학과 등록을 위한 임시 메소드 -> 학생증 OCR 적용 후 삭제
-    @Transactional
-    public UserResponse userAddMajor(HttpServletRequest httpServletRequest, Long majorId) {
-        UserResponse userResponse = null;
-
-        // 1. 헤더에서 토큰 체크
-        String token = authService.getTokenByHeader(httpServletRequest);
-
-        // 2. 토큰 유효성 체크 및 유저 불러오기
-        Long userId = authService.getUserInfoByToken(token).getId();
-
-        // 3. 유저 조회
-        User user = userService.findById(userId);
-
-        Major major = majorRepository.findById(majorId)
-                .orElseThrow(NoSuchElementException::new);
-
-        // 4. 유저에 학과 추가
-        user.setMajor(major);
-
-        // 5. 유저 저장
-        User savedUser = userService.save(user);
-
-        userResponse = savedUser.toResponse();
-
-        return userResponse;
-    }
+    // User에 학과 등록을 위한 임시 메소드 -> 학생증 OCR 적용 후 삭제 -> OCR 적용 시 사용하기 위해 주석처리
+//    @Transactional
+//    public UserResponse userAddMajor(HttpServletRequest httpServletRequest, Long majorId) {
+//        UserResponse userResponse = null;
+//
+//        // 1. 헤더에서 토큰 체크
+//        String token = authService.getTokenByHeader(httpServletRequest);
+//
+//        // 2. 토큰 유효성 체크 및 유저 불러오기
+//        Long userId = authService.getUserInfoByToken(token).getId();
+//
+//        // 3. 유저 조회
+//        User user = userService.findById(userId);
+//
+//        Major major = majorRepository.findById(majorId)
+//                .orElseThrow(NoSuchElementException::new);
+//
+//        // 4. 유저에 학과 추가
+//        user.setMajor(major);
+//
+//        // 5. 유저 저장
+//        User savedUser = userService.save(user);
+//
+//        userResponse = savedUser.toResponse();
+//
+//        return userResponse;
+//    }
 
     public List<UserMajorResponse> findByStudentId(HttpServletRequest httpServletRequest, Long studentId){
         List<UserMajorResponse> userMajorResponses = new ArrayList<>();
