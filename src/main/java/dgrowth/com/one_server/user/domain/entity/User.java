@@ -1,5 +1,6 @@
 package dgrowth.com.one_server.user.domain.entity;
 
+import dgrowth.com.one_server.user.domain.enumeration.Status;
 import dgrowth.com.one_server.user.dto.response.UserResponse;
 import dgrowth.com.one_server.base.entity.BaseEntity;
 import dgrowth.com.one_server.major.domain.entity.Major;
@@ -70,6 +71,12 @@ public class User extends BaseEntity {
     @Enumerated(STRING)
     private Authority authority;
 
+    // 승인 여부
+    @Setter
+    @Column(columnDefinition = "varchar(30) default 'PROCESSING'")
+    @Enumerated(STRING)
+    private Status status = Status.PROCESSING;
+
     @OneToOne
     @JoinColumn(name = "user_token_id")
     private UserToken userToken;
@@ -114,7 +121,7 @@ public class User extends BaseEntity {
     }
 
     public UserResponse toResponse() {
-        return new UserResponse(id, platformType, platformId, name, email, major, profileImageUrl, gender,
+        return new UserResponse(id, platformType, platformId, name, email, major.getId(), profileImageUrl, gender,
             birth);
     }
 

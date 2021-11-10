@@ -30,7 +30,7 @@ public class UserResponse {
     private String email;
     
     // 학과
-    private Major major;
+    private Long majorId;
 
     // 프로필 이미지
     private String profileImageUrl;
