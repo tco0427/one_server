@@ -39,13 +39,6 @@ public class MajorController {
         return ResponseEntity.ok().body(majorService.majorInfoByUserId(httpServletRequest));
     }
 
-    // user test를 위한 임시 controller
-    @PostMapping("/usertest/{majorId}")
-    public ResponseEntity<UserResponse> addMajor(HttpServletRequest httpServletRequest,
-        @PathVariable("majorId") Long majorId) {
-        return ResponseEntity.ok().body(majorService.userAddMajor(httpServletRequest, majorId));
-    }
-
     @GetMapping("/{majorId]/{studentId}")
     public ResponseEntity<List<UserMajorResponse>> getinfoByStudnetId(HttpServletRequest httpServletRequest,
                                                                       @PathVariable("studentId") Long studentId) {
