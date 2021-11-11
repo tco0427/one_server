@@ -1,10 +1,7 @@
 package dgrowth.com.one_server.group.controller;
 
 import dgrowth.com.one_server.group.dto.request.GroupRequest;
-import dgrowth.com.one_server.group.dto.response.CategoryResponse;
-import dgrowth.com.one_server.group.dto.response.DeleteGroupResponse;
-import dgrowth.com.one_server.group.dto.response.GroupResponse;
-import dgrowth.com.one_server.group.dto.response.HotGroupListResponse;
+import dgrowth.com.one_server.group.dto.response.*;
 import dgrowth.com.one_server.group.domain.enumeration.Category;
 import dgrowth.com.one_server.group.service.GroupService;
 import io.swagger.annotations.ApiOperation;
@@ -36,12 +33,12 @@ public class GroupController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<GroupResponse>> all(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<List<GroupWithNoticeResponse>> all(HttpServletRequest httpServletRequest) {
         return ResponseEntity.ok().body(groupService.findAll(null, httpServletRequest));
     }
 
     @GetMapping("/all/{category}")
-    public ResponseEntity<List<GroupResponse>> allByCategory(
+    public ResponseEntity<List<GroupWithNoticeResponse>> allByCategory(
         @PathVariable("category") Category category, HttpServletRequest httpServletRequest) {
         return ResponseEntity.ok().body(groupService.findAll(category, httpServletRequest));
     }
