@@ -7,11 +7,7 @@ import dgrowth.com.one_server.auth.service.AuthService;
 import dgrowth.com.one_server.group.dto.mapper.CategoryMapper;
 import dgrowth.com.one_server.group.dto.mapper.GroupMapper;
 import dgrowth.com.one_server.group.dto.request.GroupRequest;
-import dgrowth.com.one_server.group.dto.response.CategoryResponse;
-import dgrowth.com.one_server.group.dto.response.DeleteGroupResponse;
-import dgrowth.com.one_server.group.dto.response.GroupResponse;
-import dgrowth.com.one_server.group.dto.response.HotGroupListResponse;
-import dgrowth.com.one_server.group.dto.response.HotGroupResponse;
+import dgrowth.com.one_server.group.dto.response.*;
 import dgrowth.com.one_server.group.domain.entity.Group;
 import dgrowth.com.one_server.participantGroup.domain.entity.ParticipantGroup;
 import dgrowth.com.one_server.file.service.S3Uploader;
@@ -71,24 +67,27 @@ public class GroupService {
         return groupResponse;
     }
 
-    public List<GroupResponse> findAll(Category category, HttpServletRequest httpServletRequest) {
-        List<GroupResponse> groupResponseList = null;
+    public List<GroupWithNoticeResponse> findAll(Category category, HttpServletRequest httpServletRequest) {
+        List<GroupWithNoticeResponse> groupResponseList = null;
         // 1. 헤더에서 토큰 체크
         String token = authService.getTokenByHeader(httpServletRequest);
 
         // 2. 토큰 유효성 체크 및 유저 불러오기
-        Long hostId = authService.getUserInfoByToken(token).getId();
+        Long userId = authService.getUserInfoByToken(token).getId();
 
         // 3. 그룹 전체 조회
         List<Group> groups = null;
+
         if (category == null) {
             groups = groupRepository.findAll();
         } else {
             groups = groupRepository.findAllByCategory(category);
         }
 
-        // 4. Response 생성
-        groupResponseList = GroupMapper.INSTANCE.toDto(groups);
+        for (Group group : groups) {
+            GroupWithNoticeResponse groupWithNoticeResponse = new GroupWithNoticeResponse(group);
+            groupResponseList.add(groupWithNoticeResponse);
+        }
 
         return groupResponseList;
     }
