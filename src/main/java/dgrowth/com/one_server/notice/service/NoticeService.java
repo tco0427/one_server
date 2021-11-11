@@ -22,6 +22,8 @@ import dgrowth.com.one_server.major.service.MajorService;
 import dgrowth.com.one_server.notice.domain.repository.NoticeRepository;
 import dgrowth.com.one_server.user.domain.entity.User;
 import dgrowth.com.one_server.user.service.UserService;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -102,7 +104,9 @@ public class NoticeService {
     /**
      * 그룹 공지 조회
      */
-    public NoticeGroupResponse findGroupNoticeByUser(HttpServletRequest httpServletRequest) {
+    public List<NoticeGroupResponse> findGroupNoticeByUser(HttpServletRequest httpServletRequest) {
+
+        List<NoticeGroupResponse> noticeGroupResponses = new ArrayList<>();
 
         GroupResponse groupResponse = participantGroupService.findByUser(0, httpServletRequest)
                 .getMyGroupParticipantResponses().get(0);
@@ -111,17 +115,28 @@ public class NoticeService {
 
         Sort sort = Sort.by(Sort.Direction.DESC, "createdDate");
 
-        Notice notice = noticeRepository.findByGroup(group, sort).get(0);
+        List<Notice> notices = noticeRepository.findByGroup(group, sort);
 
-        NoticeGroupResponse noticeGroupResponse = new NoticeGroupResponse(notice.getId(), notice.getTitle(), group.getGroupImageUrl());
+        int length = Math.min(notices.size(), 2);
 
-        return noticeGroupResponse;
+        for (int i = 0; i < length; i++) {
+
+            Notice notice = notices.get(i);
+
+            NoticeGroupResponse noticeGroupResponse = new NoticeGroupResponse(notice.getId(), notice.getTitle(), group.getGroupImageUrl());
+
+            noticeGroupResponses.add(noticeGroupResponse);
+        }
+
+        return noticeGroupResponses;
     }
 
     /**
      * 학과 공지 조회
      */
-    public NoticeMajorResponse findMajorNoticeByUser(HttpServletRequest httpServletRequest) {
+    public List<NoticeMajorResponse> findMajorNoticeByUser(HttpServletRequest httpServletRequest) {
+
+        List<NoticeMajorResponse> noticeMajorResponses = new ArrayList<>();
 
         MajorResponse majorResponse = majorService.majorInfoByUserId(httpServletRequest);
 
@@ -129,11 +144,20 @@ public class NoticeService {
 
         Sort sort = Sort.by(Sort.Direction.DESC, "created_date");
 
-        Notice notice = noticeRepository.findByMajor(major, sort).get(0);
+        List<Notice> notices = noticeRepository.findByMajor(major, sort);
 
-        NoticeMajorResponse  noticeMajorResponse = new NoticeMajorResponse(notice.getId(), notice.getTitle(), major.getProfileUrl());
+        int length = Math.min(notices.size(), 2);
 
-        return noticeMajorResponse;
+        for (int i = 0; i < length; i++) {
+
+            Notice notice = notices.get(i);
+
+            NoticeMajorResponse noticeMajorResponse = new NoticeMajorResponse(notice.getId(), notice.getTitle(), major.getProfileUrl());
+
+            noticeMajorResponses.add(noticeMajorResponse);
+        }
+
+        return noticeMajorResponses;
     }
 
     /**

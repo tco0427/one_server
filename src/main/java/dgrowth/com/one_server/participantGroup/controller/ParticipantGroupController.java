@@ -1,6 +1,6 @@
 package dgrowth.com.one_server.participantGroup.controller;
 
-import dgrowth.com.one_server.participantGroup.dto.ParticipantGroupRequest;
+import dgrowth.com.one_server.participantGroup.dto.request.ParticipantGroupRequest;
 import dgrowth.com.one_server.participantGroup.dto.response.MyGroupParticipantListResponse;
 import dgrowth.com.one_server.participantGroup.dto.response.ParticipantGroupResponse;
 import dgrowth.com.one_server.participantGroup.service.ParticipantGroupService;

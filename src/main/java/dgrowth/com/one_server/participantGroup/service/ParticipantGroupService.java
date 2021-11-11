@@ -2,7 +2,7 @@ package dgrowth.com.one_server.participantGroup.service;
 
 import dgrowth.com.one_server.auth.service.AuthService;
 import dgrowth.com.one_server.group.dto.mapper.GroupMapper;
-import dgrowth.com.one_server.participantGroup.dto.ParticipantGroupRequest;
+import dgrowth.com.one_server.participantGroup.dto.request.ParticipantGroupRequest;
 import dgrowth.com.one_server.group.dto.response.GroupResponse;
 import dgrowth.com.one_server.group.service.GroupService;
 import dgrowth.com.one_server.participantGroup.dto.response.MyGroupParticipantListResponse;
