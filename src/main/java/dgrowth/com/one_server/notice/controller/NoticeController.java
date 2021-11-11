@@ -10,6 +10,7 @@ import dgrowth.com.one_server.group.dto.response.NoticeGroupResponse;
 import dgrowth.com.one_server.notice.dto.response.NoticeDeleteResponse;
 import dgrowth.com.one_server.notice.dto.response.NoticeResponse;
 import dgrowth.com.one_server.notice.service.NoticeService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,12 +41,12 @@ public class NoticeController {
     }
 
     @GetMapping("/group")
-    public ResponseEntity<NoticeGroupResponse> findWithGroup(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<List<NoticeGroupResponse>> findWithGroup(HttpServletRequest httpServletRequest) {
         return ResponseEntity.ok().body(noticeService.findGroupNoticeByUser(httpServletRequest));
     }
 
     @GetMapping("/major")
-    public ResponseEntity<NoticeMajorResponse> findWithMajor(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<List<NoticeMajorResponse>> findWithMajor(HttpServletRequest httpServletRequest) {
         return ResponseEntity.ok().body(noticeService.findMajorNoticeByUser(httpServletRequest));
     }
 
