@@ -17,7 +17,7 @@ public class ExceptionController {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponse> BadRequestException(final BaseException e) {
         log.warn("error", e);
-        return ResponseEntity.badRequest().body(
+        return ResponseEntity.status(e.getHttpStatus()).body(
             new ErrorResponse(LocalTime.now(), e.getMessage(), e.getHttpStatus().value(),
                 e.getHttpStatus().name()
             ));
