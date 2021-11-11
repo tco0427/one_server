@@ -25,7 +25,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = PROTECTED)
+@NoArgsConstructor()
 @ToString(of = {"id", "platformType", "platformId", "name",
         "email", "profileImageUrl", "idCardUrl", "gender",
         "birth", "authority"})
