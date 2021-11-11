@@ -130,7 +130,7 @@ public class User extends BaseEntity {
             majorId = major.getId();
         }
         return new UserResponse(id, platformType, platformId, name, email, majorId, profileImageUrl, gender,
-            birth);
+            birth, status);
     }
 
     public void setUserToken(UserToken userToken) {

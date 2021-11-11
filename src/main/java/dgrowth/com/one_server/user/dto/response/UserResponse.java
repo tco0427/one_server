@@ -4,6 +4,7 @@ import dgrowth.com.one_server.major.domain.entity.Major;
 import dgrowth.com.one_server.user.domain.enumeration.Gender;
 import dgrowth.com.one_server.user.domain.enumeration.PlatformType;
 
+import dgrowth.com.one_server.user.domain.enumeration.Status;
 import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
@@ -40,4 +41,6 @@ public class UserResponse {
 
     // 생년월일(yymmdd)
     private LocalDate birth;
+
+    private Status status;
 }
