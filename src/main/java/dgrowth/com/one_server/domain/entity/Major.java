@@ -25,6 +25,8 @@ public class Major extends BaseEntity{
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    private Long hostId;
+
     private String name; // 학과명
 
     private String location; // 위치
