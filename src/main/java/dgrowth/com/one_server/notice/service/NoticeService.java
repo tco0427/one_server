@@ -117,7 +117,7 @@ public class NoticeService {
 
         List<Notice> notices = noticeRepository.findByGroup(group, sort);
 
-        int length = Math.min(notices.size(), 2);
+        int length = notices.size();
 
         for (int i = 0; i < length; i++) {
 
@@ -146,7 +146,7 @@ public class NoticeService {
 
         List<Notice> notices = noticeRepository.findByMajor(major, sort);
 
-        int length = Math.min(notices.size(), 2);
+        int length = notices.size();
 
         for (int i = 0; i < length; i++) {
 
