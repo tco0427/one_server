@@ -9,7 +9,6 @@ import dgrowth.com.one_server.notice.dto.request.NoticeUpdateRequest;
 import dgrowth.com.one_server.notice.domain.entity.*;
 import dgrowth.com.one_server.notice.dto.response.NoticeDeleteResponse;
 import dgrowth.com.one_server.notice.dto.response.NoticeResponse;
-import dgrowth.com.one_server.participantGroup.dto.response.MyGroupParticipantResponse;
 import dgrowth.com.one_server.participantGroup.service.ParticipantGroupService;
 import dgrowth.com.one_server.user.domain.enumeration.Authority;
 import dgrowth.com.one_server.group.domain.entity.Group;
@@ -105,10 +104,8 @@ public class NoticeService {
      */
     public NoticeGroupResponse findGroupNoticeByUser(HttpServletRequest httpServletRequest) {
 
-        MyGroupParticipantResponse myGroupParticipantResponse = participantGroupService.findByUser(0, httpServletRequest)
+        GroupResponse groupResponse = participantGroupService.findByUser(0, httpServletRequest)
                 .getMyGroupParticipantResponses().get(0);
-
-        GroupResponse groupResponse = myGroupParticipantResponse.getGroupResponse();
 
         Group group = groupService.findById(groupResponse.getId());
 
