@@ -8,5 +8,5 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class MyGroupParticipantListResponse {
-    private List<MyGroupParticipantResponse> myGroupParticipantResponses;
+    private List<GroupResponse> groupResponses;
 }

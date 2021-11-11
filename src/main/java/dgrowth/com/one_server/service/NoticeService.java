@@ -90,10 +90,8 @@ public class NoticeService {
      */
     public NoticeGroupResponse findGroupNoticeByUser(HttpServletRequest httpServletRequest) {
 
-        MyGroupParticipantResponse myGroupParticipantResponse = participantGroupService.findByUser(0, httpServletRequest)
-                .getMyGroupParticipantResponses().get(0);
-
-        GroupResponse groupResponse = myGroupParticipantResponse.getGroupResponse();
+        GroupResponse groupResponse = participantGroupService.findByUser(0, httpServletRequest)
+                .getGroupResponses().get(0);
 
         Group group = groupService.findById(groupResponse.getId());
 

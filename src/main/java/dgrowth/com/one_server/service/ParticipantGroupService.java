@@ -44,7 +44,7 @@ public class ParticipantGroupService {
         List<ParticipantGroup> content = participantGroupRepository.findByUserId(user.getId(),
             pageRequest).getContent();
 
-        List<MyGroupParticipantResponse> myGroupParticipantResponseList = new ArrayList<>();
+        List<GroupResponse> myGroupParticipantResponseList = new ArrayList<>();
 
         for (ParticipantGroup participantGroup : content) {
             Long groupId = participantGroup.getGroup().getId();
@@ -52,12 +52,7 @@ public class ParticipantGroupService {
 
             GroupResponse groupResponse = GroupMapper.INSTANCE.toDto(group);
 
-            UserResponse userResponse = user.toResponse();
-
-            MyGroupParticipantResponse myGroupParticipantResponse = new MyGroupParticipantResponse(
-                groupResponse);
-
-            myGroupParticipantResponseList.add(myGroupParticipantResponse);
+            myGroupParticipantResponseList.add(groupResponse);
         }
 
         myGroupParticipantListResponse = new MyGroupParticipantListResponse(
