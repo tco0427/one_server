@@ -6,9 +6,7 @@ import dgrowth.com.one_server.participantGroup.dto.ParticipantGroupRequest;
 import dgrowth.com.one_server.group.dto.response.GroupResponse;
 import dgrowth.com.one_server.group.service.GroupService;
 import dgrowth.com.one_server.participantGroup.dto.response.MyGroupParticipantListResponse;
-import dgrowth.com.one_server.participantGroup.dto.response.MyGroupParticipantResponse;
 import dgrowth.com.one_server.participantGroup.dto.response.ParticipantGroupResponse;
-import dgrowth.com.one_server.user.dto.response.UserResponse;
 import dgrowth.com.one_server.user.domain.entity.User;
 import dgrowth.com.one_server.participantGroup.domain.repository.ParticipantGroupRepository;
 import dgrowth.com.one_server.group.domain.entity.Group;
@@ -51,7 +49,7 @@ public class ParticipantGroupService {
         List<ParticipantGroup> content = participantGroupRepository.findByUserId(user.getId(),
             pageRequest).getContent();
 
-        List<MyGroupParticipantResponse> myGroupParticipantResponseList = new ArrayList<>();
+        List<GroupResponse> myGroupParticipantResponseList = new ArrayList<>();
 
         for (ParticipantGroup participantGroup : content) {
             Long groupId = participantGroup.getGroup().getId();
@@ -59,12 +57,7 @@ public class ParticipantGroupService {
 
             GroupResponse groupResponse = GroupMapper.INSTANCE.toDto(group);
 
-            UserResponse userResponse = user.toResponse();
-
-            MyGroupParticipantResponse myGroupParticipantResponse = new MyGroupParticipantResponse(
-                groupResponse);
-
-            myGroupParticipantResponseList.add(myGroupParticipantResponse);
+            myGroupParticipantResponseList.add(groupResponse);
         }
 
         myGroupParticipantListResponse = new MyGroupParticipantListResponse(
