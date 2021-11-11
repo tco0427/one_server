@@ -77,7 +77,7 @@ public class ParticipantGroupService {
 
         User user = userService.findById(userId);
 
-        Long groupId = request.getGropuId();
+        Long groupId = request.getGroupId();
 
         Group group = groupService.findById(groupId);
 
