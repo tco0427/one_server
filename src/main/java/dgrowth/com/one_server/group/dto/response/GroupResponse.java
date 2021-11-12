@@ -3,12 +3,16 @@ package dgrowth.com.one_server.group.dto.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import dgrowth.com.one_server.group.domain.enumeration.Category;
+import dgrowth.com.one_server.notice.domain.entity.Notice;
+import dgrowth.com.one_server.notice.dto.response.NoticeResponse;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Builder
 @Getter
@@ -35,4 +39,7 @@ public class GroupResponse {
     private LocalTime time; // 시간
 
     private Category category;  // 카테고리
+
+    @Setter
+    private List<NoticeResponse> notices;
 }

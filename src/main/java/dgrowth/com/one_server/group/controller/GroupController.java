@@ -33,12 +33,12 @@ public class GroupController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<GroupWithNoticeResponse>> all(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<List<GroupResponse>> all(HttpServletRequest httpServletRequest) {
         return ResponseEntity.ok().body(groupService.findAll(null, httpServletRequest));
     }
 
     @GetMapping("/all/{category}")
-    public ResponseEntity<List<GroupWithNoticeResponse>> allByCategory(
+    public ResponseEntity<List<GroupResponse>> allByCategory(
         @PathVariable("category") Category category, HttpServletRequest httpServletRequest) {
         return ResponseEntity.ok().body(groupService.findAll(category, httpServletRequest));
     }
