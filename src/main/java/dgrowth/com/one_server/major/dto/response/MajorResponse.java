@@ -1,9 +1,12 @@
 package dgrowth.com.one_server.major.dto.response;
 
+import dgrowth.com.one_server.notice.dto.response.NoticeResponse;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Builder
 @Getter
@@ -24,4 +27,7 @@ public class MajorResponse {
     private String association; // 학생회
 
     private String president; // 학생회장
+
+    @Setter
+    private List<NoticeResponse> notices;
 }

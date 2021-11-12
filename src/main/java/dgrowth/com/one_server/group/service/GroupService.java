@@ -9,6 +9,7 @@ import dgrowth.com.one_server.group.dto.mapper.GroupMapper;
 import dgrowth.com.one_server.group.dto.request.GroupRequest;
 import dgrowth.com.one_server.group.dto.response.*;
 import dgrowth.com.one_server.group.domain.entity.Group;
+import dgrowth.com.one_server.notice.dto.NoticeMapper;
 import dgrowth.com.one_server.participantGroup.domain.entity.ParticipantGroup;
 import dgrowth.com.one_server.file.service.S3Uploader;
 import dgrowth.com.one_server.user.domain.entity.User;
@@ -51,6 +52,7 @@ public class GroupService {
     }
 
     public GroupResponse groupInfoById(HttpServletRequest httpServletRequest, Long id) {
+
         GroupResponse groupResponse = null;
         // 1. 헤더에서 토큰 체크
         String token = authService.getTokenByHeader(httpServletRequest);
@@ -64,11 +66,16 @@ public class GroupService {
         // 4. Response 생성
         groupResponse = GroupMapper.INSTANCE.toDto(group);
 
+        groupResponse.setNotices(NoticeMapper.multipleToResponses(group.getNotices(), 2));
+
         return groupResponse;
     }
 
-    public List<GroupWithNoticeResponse> findAll(Category category, HttpServletRequest httpServletRequest) {
-        List<GroupWithNoticeResponse> groupResponseList = null;
+
+    public List<GroupResponse> findAll(Category category, HttpServletRequest httpServletRequest) {
+
+        List<GroupResponse> groupResponsesList = new ArrayList<>();
+
         // 1. 헤더에서 토큰 체크
         String token = authService.getTokenByHeader(httpServletRequest);
 
@@ -85,11 +92,15 @@ public class GroupService {
         }
 
         for (Group group : groups) {
-            GroupWithNoticeResponse groupWithNoticeResponse = new GroupWithNoticeResponse(group);
-            groupResponseList.add(groupWithNoticeResponse);
+
+            GroupResponse groupResponse = GroupMapper.INSTANCE.toDto(group);
+
+            groupResponse.setNotices(NoticeMapper.multipleToResponses(group.getNotices(), 2));
+
+            groupResponsesList.add(groupResponse);
         }
 
-        return groupResponseList;
+        return groupResponsesList;
     }
 
     @Transactional
@@ -146,10 +157,6 @@ public class GroupService {
         }
 
         return deleteGroupResponse;
-    }
-
-    public List<Group> findByHostId(Long hostId) {
-        return groupRepository.findByHostId(hostId);
     }
 
     public HotGroupListResponse findHotGroup() {

@@ -5,8 +5,8 @@ import dgrowth.com.one_server.major.dto.mapper.MajorMapper;
 import dgrowth.com.one_server.major.dto.request.MajorRequest;
 import dgrowth.com.one_server.major.dto.response.MajorResponse;
 import dgrowth.com.one_server.major.dto.response.UserMajorResponse;
-import dgrowth.com.one_server.user.dto.response.UserResponse;
 import dgrowth.com.one_server.major.domain.entity.Major;
+import dgrowth.com.one_server.notice.dto.NoticeMapper;
 import dgrowth.com.one_server.user.domain.entity.User;
 import dgrowth.com.one_server.major.domain.repository.MajorRepository;
 
@@ -50,6 +50,8 @@ public class MajorService {
         // 4. Response 생성
         majorResponse = MajorMapper.INSTANCE.toDto(major);
 
+        majorResponse.setNotices(NoticeMapper.multipleToResponses(major.getNotices(), 2));
+
         return majorResponse;
     }
 
@@ -74,6 +76,8 @@ public class MajorService {
         // 4. Response 생성
         majorResponse = MajorMapper.INSTANCE.toDto(major);
 
+        majorResponse.setNotices(NoticeMapper.multipleToResponses(major.getNotices(), 2));
+
         return majorResponse;
     }
 
@@ -92,6 +96,8 @@ public class MajorService {
 
         // 4. Response 생성
         majorResponse = MajorMapper.INSTANCE.toDto(major);
+
+        majorResponse.setNotices(NoticeMapper.multipleToResponses(major.getNotices(), 2));
 
         return majorResponse;
     }
