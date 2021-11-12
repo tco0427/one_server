@@ -6,6 +6,8 @@ import dgrowth.com.one_server.major.dto.request.MajorRequest;
 import dgrowth.com.one_server.major.dto.response.MajorResponse;
 import dgrowth.com.one_server.major.dto.response.UserMajorResponse;
 import dgrowth.com.one_server.major.domain.entity.Major;
+import dgrowth.com.one_server.notice.domain.entity.Notice;
+import dgrowth.com.one_server.notice.domain.repository.NoticeRepository;
 import dgrowth.com.one_server.notice.dto.NoticeMapper;
 import dgrowth.com.one_server.user.domain.entity.User;
 import dgrowth.com.one_server.major.domain.repository.MajorRepository;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +30,7 @@ public class MajorService {
     private final MajorRepository majorRepository;
     private final AuthService authService;
     private final UserService userService;
+    private final NoticeRepository noticeRepository;
 
     public Major findById(Long id) {
         return majorRepository.findById(id).orElseThrow(NoSuchElementException::new);
@@ -49,8 +53,6 @@ public class MajorService {
 
         // 4. Response 생성
         majorResponse = MajorMapper.INSTANCE.toDto(major);
-
-        majorResponse.setNotices(NoticeMapper.multipleToResponses(major.getNotices(), 2));
 
         return majorResponse;
     }
@@ -97,7 +99,11 @@ public class MajorService {
         // 4. Response 생성
         majorResponse = MajorMapper.INSTANCE.toDto(major);
 
-        majorResponse.setNotices(NoticeMapper.multipleToResponses(major.getNotices(), 2));
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdDate");
+
+        List<Notice> notices = noticeRepository.findByMajor(major, sort);
+
+        majorResponse.setNotices(NoticeMapper.multipleToResponses(notices, 2));
 
         return majorResponse;
     }

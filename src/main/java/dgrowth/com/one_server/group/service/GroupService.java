@@ -9,6 +9,8 @@ import dgrowth.com.one_server.group.dto.mapper.GroupMapper;
 import dgrowth.com.one_server.group.dto.request.GroupRequest;
 import dgrowth.com.one_server.group.dto.response.*;
 import dgrowth.com.one_server.group.domain.entity.Group;
+import dgrowth.com.one_server.notice.domain.entity.Notice;
+import dgrowth.com.one_server.notice.domain.repository.NoticeRepository;
 import dgrowth.com.one_server.notice.dto.NoticeMapper;
 import dgrowth.com.one_server.participantGroup.domain.entity.ParticipantGroup;
 import dgrowth.com.one_server.file.service.S3Uploader;
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import dgrowth.com.one_server.participantGroup.domain.repository.ParticipantGroupRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +48,7 @@ public class GroupService {
     private final JPAQueryFactory queryFactory;
     private final S3Uploader s3Uploader;
     private final UserService userService;
+    private final NoticeRepository noticeRepository;
 
     public Group findById(Long id) {
         return groupRepository.findById(id)
@@ -66,7 +70,11 @@ public class GroupService {
         // 4. Response 생성
         groupResponse = GroupMapper.INSTANCE.toDto(group);
 
-        groupResponse.setNotices(NoticeMapper.multipleToResponses(group.getNotices(), 2));
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdDate");
+
+        List<Notice> notices = noticeRepository.findByGroup(group, sort);
+
+        groupResponse.setNotices(NoticeMapper.multipleToResponses(notices, 2));
 
         return groupResponse;
     }
@@ -91,11 +99,15 @@ public class GroupService {
             groups = groupRepository.findAllByCategory(category);
         }
 
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdDate");
+
         for (Group group : groups) {
 
             GroupResponse groupResponse = GroupMapper.INSTANCE.toDto(group);
 
-            groupResponse.setNotices(NoticeMapper.multipleToResponses(group.getNotices(), 2));
+            List<Notice> notices = noticeRepository.findByGroup(group, sort);
+
+            groupResponse.setNotices(NoticeMapper.multipleToResponses(notices, 2));
 
             groupResponsesList.add(groupResponse);
         }
