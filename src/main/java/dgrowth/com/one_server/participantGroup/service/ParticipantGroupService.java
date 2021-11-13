@@ -1,6 +1,7 @@
 package dgrowth.com.one_server.participantGroup.service;
 
 import dgrowth.com.one_server.auth.service.AuthService;
+import dgrowth.com.one_server.group.domain.exception.InvalidGroupException;
 import dgrowth.com.one_server.group.dto.mapper.GroupMapper;
 import dgrowth.com.one_server.participantGroup.dto.request.ParticipantGroupRequest;
 import dgrowth.com.one_server.group.dto.response.GroupResponse;

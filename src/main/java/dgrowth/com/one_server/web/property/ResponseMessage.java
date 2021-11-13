@@ -19,7 +19,8 @@ public class ResponseMessage {
     public static final String INVALID_USER = "토큰에 해당하는 회원 정보가 없습니다.";
     public static final String FAILED_TO_FIND_USER = "회원 정보 조회에 실패했습니다.";
     public static final String FAILED_TO_SEND_MESSAGE = "메시지 발송에 실패했습니다";
-    public static final String INVALID_CHAT_ROOM_ID = "해당하는 채팅방을 찾을 수 없습니다";
+    public static final String INVALID_CHAT_ROOM_ID = "해당하는 채팅방을 찾을 수 없습니다.";
     public static final String INVALID_CHAT_ROOM_USER = "채팅방에 속하지 않은 회원입니다.";
+    public static final String INVALID_GROUP = "유효하지 않은 그룹입니다.";
 
 }
