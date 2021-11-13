@@ -3,6 +3,9 @@ package dgrowth.com.one_server.participantGroup.service;
 import dgrowth.com.one_server.auth.service.AuthService;
 import dgrowth.com.one_server.group.domain.exception.InvalidGroupException;
 import dgrowth.com.one_server.group.dto.mapper.GroupMapper;
+import dgrowth.com.one_server.notice.domain.entity.Notice;
+import dgrowth.com.one_server.notice.dto.NoticeMapper;
+import dgrowth.com.one_server.notice.dto.response.NoticeResponse;
 import dgrowth.com.one_server.participantGroup.dto.request.ParticipantGroupRequest;
 import dgrowth.com.one_server.group.dto.response.GroupResponse;
 import dgrowth.com.one_server.group.service.GroupService;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -57,6 +61,12 @@ public class ParticipantGroupService {
             Group group = groupService.findById(groupId);
 
             GroupResponse groupResponse = GroupMapper.INSTANCE.toDto(group);
+
+            List<Notice> notices = group.getNotices();
+
+            Collections.reverse(notices);   //역순이 되면 아이디 큰 순으로됨(최신것)
+
+            groupResponse.setNotices(NoticeMapper.multipleToResponses(notices, 2));
 
             myGroupParticipantResponseList.add(groupResponse);
         }
