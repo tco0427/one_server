@@ -4,6 +4,7 @@ import dgrowth.com.one_server.auth.service.AuthService;
 import dgrowth.com.one_server.group.domain.exception.InvalidGroupException;
 import dgrowth.com.one_server.group.dto.mapper.GroupMapper;
 import dgrowth.com.one_server.notice.domain.entity.Notice;
+import dgrowth.com.one_server.notice.dto.NoticeMapper;
 import dgrowth.com.one_server.notice.dto.response.NoticeResponse;
 import dgrowth.com.one_server.participantGroup.dto.request.ParticipantGroupRequest;
 import dgrowth.com.one_server.group.dto.response.GroupResponse;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -62,14 +64,9 @@ public class ParticipantGroupService {
 
             List<Notice> notices = group.getNotices();
 
-            List<NoticeResponse> noticeResponses = new ArrayList<>();
+            Collections.reverse(notices);   //역순이 되면 아이디 큰 순으로됨(최신것)
 
-            for (Notice notice : notices) {
-                NoticeResponse noticeResponse = new NoticeResponse(notice.getId(), notice.getTitle(), notice.getContent());
-                noticeResponses.add(noticeResponse);
-            }
-
-            groupResponse.setNotices(noticeResponses);
+            groupResponse.setNotices(NoticeMapper.multipleToResponses(notices, 2));
 
             myGroupParticipantResponseList.add(groupResponse);
         }
