@@ -3,6 +3,8 @@ package dgrowth.com.one_server.participantGroup.service;
 import dgrowth.com.one_server.auth.service.AuthService;
 import dgrowth.com.one_server.group.domain.exception.InvalidGroupException;
 import dgrowth.com.one_server.group.dto.mapper.GroupMapper;
+import dgrowth.com.one_server.notice.domain.entity.Notice;
+import dgrowth.com.one_server.notice.dto.response.NoticeResponse;
 import dgrowth.com.one_server.participantGroup.dto.request.ParticipantGroupRequest;
 import dgrowth.com.one_server.group.dto.response.GroupResponse;
 import dgrowth.com.one_server.group.service.GroupService;
@@ -57,6 +59,17 @@ public class ParticipantGroupService {
             Group group = groupService.findById(groupId);
 
             GroupResponse groupResponse = GroupMapper.INSTANCE.toDto(group);
+
+            List<Notice> notices = group.getNotices();
+
+            List<NoticeResponse> noticeResponses = new ArrayList<>();
+
+            for (Notice notice : notices) {
+                NoticeResponse noticeResponse = new NoticeResponse(notice.getId(), notice.getTitle(), notice.getContent());
+                noticeResponses.add(noticeResponse);
+            }
+
+            groupResponse.setNotices(noticeResponses);
 
             myGroupParticipantResponseList.add(groupResponse);
         }
