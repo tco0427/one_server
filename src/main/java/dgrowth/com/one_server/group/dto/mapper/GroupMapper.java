@@ -17,6 +17,8 @@ public interface GroupMapper extends BaseMapper<GroupResponse, Group> {
 
     @Override
     @Mapping(source = "notices", target = "notices", ignore = true)
+    @Mapping(target = "isParticipant", ignore = true)
+    @Mapping(target = "numParticipants", ignore = true)
     GroupResponse toDto(Group entity);
 
     @Override

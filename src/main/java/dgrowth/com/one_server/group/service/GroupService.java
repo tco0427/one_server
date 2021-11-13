@@ -4,6 +4,7 @@ package dgrowth.com.one_server.group.service;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import dgrowth.com.one_server.auth.service.AuthService;
+import dgrowth.com.one_server.group.domain.exception.InvalidGroupException;
 import dgrowth.com.one_server.group.dto.mapper.CategoryMapper;
 import dgrowth.com.one_server.group.dto.mapper.GroupMapper;
 import dgrowth.com.one_server.group.dto.request.GroupRequest;
@@ -50,6 +51,22 @@ public class GroupService {
     private final UserService userService;
     private final NoticeRepository noticeRepository;
 
+    private Boolean isUserInGroup(Group group, Long userId) {
+        if (group == null) {
+            throw new InvalidGroupException();
+        }
+
+        List<ParticipantGroup> participantGroups = participantGroupRepository.findAllByGroup(group);
+
+        for (ParticipantGroup participantGroup : participantGroups) {
+            if (participantGroup.getUser().getId() == userId) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public Group findById(Long id) {
         return groupRepository.findById(id)
             .orElseThrow(NoSuchElementException::new);
@@ -62,7 +79,7 @@ public class GroupService {
         String token = authService.getTokenByHeader(httpServletRequest);
 
         // 2. 토큰 유효성 체크 및 유저 불러오기
-        Long hostId = authService.getUserInfoByToken(token).getId();
+        Long userId = authService.getUserInfoByToken(token).getId();
 
         // 3. 그룹 조회
         Group group = findById(id);
@@ -75,10 +92,11 @@ public class GroupService {
         List<Notice> notices = noticeRepository.findByGroup(group, sort);
 
         groupResponse.setNotices(NoticeMapper.multipleToResponses(notices, 2));
+        groupResponse.setIsParticipant(isUserInGroup(group, userId));
+        groupResponse.setNumParticipants(participantGroupRepository.countParticipantGroupByGroup(group));
 
         return groupResponse;
     }
-
 
     public List<GroupResponse> findAll(Category category, HttpServletRequest httpServletRequest) {
 
@@ -108,7 +126,8 @@ public class GroupService {
             List<Notice> notices = noticeRepository.findByGroup(group, sort);
 
             groupResponse.setNotices(NoticeMapper.multipleToResponses(notices, 2));
-
+            groupResponse.setIsParticipant(isUserInGroup(group, userId));
+            groupResponse.setNumParticipants(participantGroupRepository.countParticipantGroupByGroup(group));
             groupResponsesList.add(groupResponse);
         }
 
@@ -144,6 +163,8 @@ public class GroupService {
             // 4. Response 생성
             groupResponse = GroupMapper.INSTANCE.toDto(savedGroup);
 
+            groupResponse.setIsParticipant(true);
+            groupResponse.setNumParticipants(1);
         } catch(IOException e) {
             e.getMessage();
         }

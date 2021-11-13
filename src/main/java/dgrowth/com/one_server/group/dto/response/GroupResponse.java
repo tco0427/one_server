@@ -42,4 +42,10 @@ public class GroupResponse {
 
     @Setter
     private List<NoticeResponse> notices;
+
+    @Setter
+    private Boolean isParticipant;
+
+    @Setter
+    private Integer numParticipants;
 }
