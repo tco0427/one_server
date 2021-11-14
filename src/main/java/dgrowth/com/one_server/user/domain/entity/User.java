@@ -129,8 +129,14 @@ public class User extends BaseEntity {
         } else {
             majorId = major.getId();
         }
+
+        if (studentId == null) {
+            return new UserResponse(id, platformType, platformId, name, email, majorId,
+                profileImageUrl, gender, birth, status, null, null);
+        }
+
         return new UserResponse(id, platformType, platformId, name, email, majorId, profileImageUrl, gender,
-            birth, status);
+            birth, status, studentId, (int)((studentId/10000)%100));
     }
 
     public void setUserToken(UserToken userToken) {
