@@ -43,4 +43,8 @@ public class UserResponse {
     private LocalDate birth;
 
     private Status status;
+
+    private Long studentId;
+
+    private Integer entranceYear;
 }
