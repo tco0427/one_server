@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+## Setting
+src/main/resources/application.yaml
+src/main/resources/application-prod.yaml
