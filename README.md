@@ -3,6 +3,8 @@
 - 기술스택 : Spring Boot, JPA, Mysql 
 - API 문서 : http://api-werone.itkoo.kr/swagger-ui.html#/
 
+* main branch에 push 할 경우 자동으로 서버에 배포됩니다.(jenkins)
+
 <img width="954" alt="스크린샷 2021-11-16 오후 2 15 18" src="https://user-images.githubusercontent.com/31758135/141925111-d17d2b10-83ce-4479-ac12-df8976e6416e.png">
 <img width="1161" alt="스크린샷 2021-11-16 오후 2 09 13" src="https://user-images.githubusercontent.com/31758135/141924569-81b0fd8a-333d-4096-8989-cc0e2b7c5b0e.png">
 <img width="835" alt="스크린샷 2021-11-16 오후 2 10 52" src="https://user-images.githubusercontent.com/31758135/141924730-104ae5b6-c0ea-4717-ade9-7dd652f062dc.png">
